@@ -1,5 +1,6 @@
 const timer = document.getElementById("timer");
 const startButton = document.getElementById("btnStart");
+const pauseButton = document.getElementById("btnPause");
 const ding = new Audio('sounds/ding.mp3');
 
 //time will be set by user in html form
@@ -11,6 +12,7 @@ let countInterval;
 
 //start timer on start button click
 startButton.addEventListener("click", setTimer);
+pauseButton.addEventListener("click", pauseTimer);
 
 //interval calls updateTimer every second
 //Possibly unnecessary function
@@ -49,7 +51,8 @@ function playSound(){
 
 
 function pauseTimer(){
-    updateTimer
+    const timeLeft = timeInSec;
+    clearInterval(countInterval);
 }
 
 
