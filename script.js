@@ -3,23 +3,40 @@ const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
 const ding = new Audio('sounds/ding.mp3');
 
-//time will be set by user in html form
-const setTime = .1;
-let timeInSec = setTime * 60;
+
+const hour = document.getElementById("hhInput"); 
+let hourVal = 99;
+
+hour.addEventListener("input", setHour);
+
+function setHour(){
+    hourVal = document.getElementById("hhInput").value
+}
+
+
 
 //mutable variable for interval ID access
 let countInterval; 
 
 //start timer on start button click
 startButton.addEventListener("click", setTimer);
+//pause timer on button click, pause button starts off hidden
 pauseButton.addEventListener("click", pauseTimer);
 pauseButton.style.visibility = 'hidden';
-
+let timeInSec;
 //interval calls updateTimer every second
 //Possibly unnecessary function
 function setTimer(){
+// time set by user
+const setTime = hourVal;
+ timeInSec = setTime * 60;
+
  countInterval= setInterval(updateTimer, 1000)
  toggleButtonView(startButton, pauseButton);
+
+ //testing:
+ console.log("hour: " + hourVal);
+ console.log("setTime: " + setTime);
 }
 
 //decreses the time shown by 1 second and stops when time hits 0
@@ -33,10 +50,8 @@ function updateTimer(){
         clearInterval(countInterval);
         console.log("timer ended");
         playSound();
-
     }
-    
-}
+   }
 
 //creates string format of time
 function displayTime(min, sec){

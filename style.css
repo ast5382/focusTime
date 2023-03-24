@@ -38,7 +38,9 @@ button{
 
 #timer{
     font-size: 100px;
+    /* background-color: #6767671b; */
 
+    /* to center timer */
     position: absolute;
     top: 45%;
     left: 50%;
