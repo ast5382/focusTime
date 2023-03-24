@@ -3,7 +3,7 @@ h1{
     text-align: center;
 }
 
-#buttons{
+button{
     position: absolute;
     top: 70%;
     left: 50%;

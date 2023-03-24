@@ -13,11 +13,13 @@ let countInterval;
 //start timer on start button click
 startButton.addEventListener("click", setTimer);
 pauseButton.addEventListener("click", pauseTimer);
+pauseButton.style.visibility = 'hidden';
 
 //interval calls updateTimer every second
 //Possibly unnecessary function
 function setTimer(){
  countInterval= setInterval(updateTimer, 1000)
+ toggleButtonView(startButton, pauseButton);
 }
 
 //decreses the time shown by 1 second and stops when time hits 0
@@ -49,12 +51,18 @@ function playSound(){
     ding.play();
 }
 
-
+//pauses timer
 function pauseTimer(){
     const timeLeft = timeInSec;
     clearInterval(countInterval);
+    toggleButtonView(pauseButton, startButton);
 }
 
+//toggle visibility status of buttons
+function toggleButtonView(btnHide, btnShow){
+    btnHide.style.visibility = 'hidden';
+    btnShow.style.visibility = 'visible';
+}
 
 
  
