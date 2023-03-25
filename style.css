@@ -24,6 +24,11 @@ button{
     transform: translate(-50%, -50%);
 }
 
+input{
+    width: 40px;
+
+}
+
 #btnStart{
     background-color: #9BDC84;
     font-weight:bold;
