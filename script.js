@@ -1,6 +1,7 @@
 const timer = document.getElementById("timer");
 const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
+const input = document.querySelectorAll("input");
 const ding = new Audio('sounds/ding.mp3');
 
 const hour = document.getElementById("inputHour");
@@ -41,21 +42,10 @@ startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
 pauseButton.style.visibility = 'hidden';
 
-//*UNUSED
-//interval calls updateTimer every second
-function setTimer() {
-
-    // format time set by user
-  // const setTime = (hourVal*3600) + (minVal*60) + secVal;
-    timeInSec = formatTime(hourVal, minVal, secVal);
-
-    countInterval = setInterval(updateTimer, 1000)
-    toggleButtonView(startButton, pauseButton);
-
-    //testing:
-    console.log("minutes: " + minVal);
-    console.log("setTime: " + setTime);
-}
+input.forEach((i)=>{
+    i.addEventListener("mouseover", ()=>{i.style.backgroundColor ="#F5F5F5"});
+    i.addEventListener("mouseout", ()=>{i.style.backgroundColor="white"});
+})
 
 function startTimer() {
     if (resume) {
@@ -132,5 +122,7 @@ function toggleButtonView(btnHide, btnShow) {
     btnHide.style.visibility = 'hidden';
     btnShow.style.visibility = 'visible';
 }
+
+
 
 
