@@ -41,8 +41,8 @@ startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
 pauseButton.style.visibility = 'hidden';
 
+//*UNUSED
 //interval calls updateTimer every second
-//Possibly unnecessary function
 function setTimer() {
 
     // format time set by user
@@ -58,17 +58,12 @@ function setTimer() {
 }
 
 function startTimer() {
-    //testing
-    console.log(hourVal);
-    console.log(minVal);
-    console.log(secVal);
-    console.log(timeInSec)
-
     if (resume) {
         timeInSec = timeLeft;
         countInterval = setInterval(updateTimer, 1000)
     } else {
-        const setTime = minVal;
+        // const setTime = minVal;
+
         timeInSec = formatTime(hourVal, minVal, secVal);
         countInterval = setInterval(updateTimer, 1000)
     }
@@ -84,7 +79,7 @@ function updateTimer() {
         hours = Math.floor(timeInSec/3600);
         mins = Math.floor(60*(timeInSec%3600)/3600);
     }
-    console.log(`${hours},${mins},${secs}`)
+   
     displayTime(hours, mins, secs);
     timeInSec--;
     if (hour<=0 && mins <= 0 && secs <= 0) {
@@ -92,6 +87,8 @@ function updateTimer() {
         console.log("timer ended");
         playSound();
     }
+    
+   
 }
 
 //creates string format of time
@@ -112,7 +109,8 @@ function displayTime(hours, min, sec) {
 }
 
 function formatTime(h,m,s){
-    return (h*3600) + (m*60) + s;
+
+    return Number(h*3600) + (Number(m*60)) + Number(s);
 }
 
 //is this necessary?
@@ -123,7 +121,7 @@ function playSound() {
 //pauses timer
 function pauseTimer() {
     timeLeft = timeInSec;
-    console.log("time left: " + timeLeft);
+    // console.log("time left: " + timeLeft);
     clearInterval(countInterval);
     toggleButtonView(pauseButton, startButton);
     resume = true;
