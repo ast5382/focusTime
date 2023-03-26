@@ -2,6 +2,7 @@ const timer = document.getElementById("timer");
 const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
 const input = document.querySelectorAll("input");
+const container = document.getElementsByClassName("container");
 const ding = new Audio('sounds/ding.mp3');
 
 const hour = document.getElementById("inputHour");
@@ -42,6 +43,37 @@ startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
 pauseButton.style.visibility = 'hidden';
 
+// container.style.visibility='hidden';
+timer.addEventListener("click", ()=>{
+    console.log("clicked");
+    container[0].style.visibility='visible';
+    //hideOnOutsideClick(timer, container[0]);
+    window.addEventListener("click", onClickOutside);
+} );
+
+
+//hides container if click was made outside timer or container
+const onClickOutside = (event)=>{
+    const withinBoundary1 = event.composedPath().includes(timer);
+    const withinBoundary2 = event.composedPath().includes(container[0]);
+
+
+        if (withinBoundary1) {
+        console.log("Click happened inside element")
+        } else if(withinBoundary2){
+            console.log("Click happened inside element")
+        } else{
+            container[0].style.visibility='hidden';
+        console.log("Click happened **OUTSIDE** element");
+        window.removeEventListener("click", onClickOutside);
+        }
+    }
+
+    
+    // document.addEventListener('click', (event) => {
+    //     document.removeEventListener})
+
+//change color on hover over textinput
 input.forEach((i)=>{
     i.addEventListener("mouseover", ()=>{i.style.backgroundColor ="#F5F5F5"});
     i.addEventListener("mouseout", ()=>{i.style.backgroundColor="white"});
