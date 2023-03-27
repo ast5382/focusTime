@@ -79,6 +79,15 @@ input{
     transform: translate(-50%, -50%);
     visibility: hidden;
 }
+#btnBreak{
+    background-color: #676767;
+
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+}
 
 #timer{
     font-size: 100px;
