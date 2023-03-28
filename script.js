@@ -101,16 +101,34 @@ function startTimer() {
 
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
-    const hours = parseTime()[0];
-    const mins = parseTime()[1];
-    const secs = parseTime()[2];
+    timeInUnits = parseTime();
+    let hours = timeInUnits[0]; //will be let hours = <Timer>.timeInUnits[0];
+    let mins = timeInUnits[1];
+    let secs = timeInUnits[2];
 
-    displayTime(hours, mins, secs);
+toString = ()=>{
+    secs = secs < 10 ? '0' + secs : secs;
+    mins = mins < 10 ? '0' + mins : mins;
+
+    if (hours >= 1) {
+        return `${hours}:${mins}:${secs}`;
+    } else{
+        return `${mins}:${secs}`;
+    }
+}
+
+    update();
+    //displayTime(hours, mins, secs); //Seperate updateTimer and updateDisplay responsibilities?
     timeInSec--;
 
     if (hours <= 0 && mins <= 0 && secs <= 0) {
         timerEnd();
     }
+    
+}
+
+function update(){
+    timerDiv.innerHTML = toString();    //will be <Timer>.toString
 }
 
 //Parse time from seconds to hours, minutes, seconds
@@ -128,6 +146,7 @@ function parseTime(){
     return arr;
 }
 
+//Ends timer, plays sound, shows break button
 function timerEnd(){
     clearInterval(countInterval);
     console.log("timer ended");
