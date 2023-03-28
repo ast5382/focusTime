@@ -101,24 +101,39 @@ function startTimer() {
 
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
-    let hours = 0;
-    let mins = Math.floor(timeInSec / 60);
-    let secs = timeInSec % 60;
-    if (mins > 60) {
-        hours = Math.floor(timeInSec / 3600);
-        mins = Math.floor(60 * (timeInSec % 3600) / 3600);
-    }
+    const hours = parseTime()[0];
+    const mins = parseTime()[1];
+    const secs = parseTime()[2];
 
     displayTime(hours, mins, secs);
     timeInSec--;
 
     if (hours <= 0 && mins <= 0 && secs <= 0) {
-        clearInterval(countInterval);
-        console.log("timer ended");
-        playSound();
-        
-        breakButton.style.visibility='visible';
+        timerEnd();
     }
+}
+
+//Parse time from seconds to hours, minutes, seconds
+//Returns array
+function parseTime(){
+    const arr = [];
+    let h = 0;
+    let m = Math.floor(timeInSec / 60);
+    let s = timeInSec % 60;
+    if (m > 60) {
+        h = Math.floor(timeInSec / 3600);
+        m = Math.floor(60 * (timeInSec % 3600) / 3600);
+    }
+    arr.push(h, m, s);
+    return arr;
+}
+
+function timerEnd(){
+    clearInterval(countInterval);
+    console.log("timer ended");
+    playSound();
+    
+    breakButton.style.visibility='visible';
 }
 
 //Creates string format of time
