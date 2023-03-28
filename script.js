@@ -1,17 +1,17 @@
 //HTML element initializations
-const timer = document.getElementById("timer");
+const timerDiv = document.getElementById("timer");
 const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
 const restartButton = document.getElementById("btnRestart");
 const breakButton = document.getElementById("btnBreak");
-const input = document.querySelectorAll("input");
+const inputs = document.querySelectorAll("input");
 const container = document.getElementsByClassName("container");
 const ding = new Audio('sounds/ding.mp3');
 
 //For focus timer
-const hour = document.getElementById("inputHour");
-const min = document.getElementById("inputMin");
-const sec = document.getElementById("inputSec");
+const hourInput = document.getElementById("inputHour");
+const minInput = document.getElementById("inputMin");
+const secInput = document.getElementById("inputSec");
 let hourVal = "";
 let minVal = "";
 let secVal = "";
@@ -26,24 +26,24 @@ let countInterval;
 
 //Mutable variables for global access
 let timeInSec;
-let resume = false;
+let restart = true;
 let timeLeft;
 
 
 //When user input entered, set value
-hour.addEventListener("input", () => {
+hourInput.addEventListener("input", () => {
     hourVal = document.getElementById("inputHour").value
-    resume = false;
+    restart = true;
 });
 //For minutes:
-min.addEventListener("input", () => {
+minInput.addEventListener("input", () => {
     minVal = document.getElementById("inputMin").value
-    resume = false;
+    restart = true;
 });
 //For seconds:
-sec.addEventListener("input", () => {
+secInput.addEventListener("input", () => {
     secVal = document.getElementById("inputSec").value
-    resume = false;
+    restart = true;
 });
 
 //Start & pause timer on start button click
@@ -56,7 +56,7 @@ restartButton.addEventListener("click", restartTimer);
 breakButton.addEventListener("click", breakTimer);
 
 
-timer.addEventListener("click", () => {
+timerDiv.addEventListener("click", () => {
     // console.log("clicked");
     container[0].style.visibility = 'visible';
     window.addEventListener("click", onClickOutside);
@@ -65,7 +65,7 @@ timer.addEventListener("click", () => {
 
 //Hides container if click was made outside timer or container
 const onClickOutside = (event) => {
-    const withinBoundary1 = event.composedPath().includes(timer);
+    const withinBoundary1 = event.composedPath().includes(timerDiv);
     const withinBoundary2 = event.composedPath().includes(container[0]);
 
     if (withinBoundary1) {
@@ -79,25 +79,19 @@ const onClickOutside = (event) => {
     }
 }
 
-
-// document.addEventListener('click', (event) => {
-//     document.removeEventListener})
-
 //Change color of text input on hover over
-input.forEach((i) => {
+inputs.forEach((i) => {
     i.addEventListener("mouseover", () => { i.style.backgroundColor = "#F5F5F5" });
     i.addEventListener("mouseout", () => { i.style.backgroundColor = "white" });
 })
 
-
 // Starts a timer
 function startTimer() {
-    if (resume) {
+    //If not restarting, start at time left
+    if (!restart) {
         timeInSec = timeLeft;
         countInterval = setInterval(updateTimer, 1000)
     } else {
-        // const setTime = minVal;
-
         timeInSec = formatTime(hourVal, minVal, secVal);
         countInterval = setInterval(updateTimer, 1000)
     }
@@ -125,8 +119,6 @@ function updateTimer() {
         
         breakButton.style.visibility='visible';
     }
-
-
 }
 
 //Creates string format of time
@@ -136,10 +128,10 @@ function displayTime(hours, min, sec) {
 
     if (hours >= 1) {
         // hours = hours < 10 ? '0' + hours : hours;
-        timer.innerHTML = `${hours}:${min}:${sec}`;
+        timerDiv.innerHTML = `${hours}:${min}:${sec}`;
     }
     else {
-        timer.innerHTML = `${min}:${sec}`;
+        timerDiv.innerHTML = `${min}:${sec}`;
     }
 }
 
@@ -159,8 +151,10 @@ function pauseTimer() {
     // console.log("time left: " + timeLeft);
     clearInterval(countInterval);
     toggleButtonView(pauseButton, startButton);
+    restart = false;
+    
     restartButton.style.visibility = 'visible';
-    resume = true;
+    
 }
 
 //Toggle visibility status of buttons
@@ -173,14 +167,19 @@ function toggleButtonView(btnHide, btnShow) {
 //Resets and starts the timer to original time
 function restartTimer(){
     pauseTimer();
-    resume = false
+    restart = true;
     startTimer();
 }
-
 
 function breakTimer(){
 
     timeInSec = formatTime(breakHour, breakMin, breakSec);
     countInterval = setInterval(updateTimer, 1000)
     toggleButtonView(breakButton, pauseButton);
+}
+
+function setTimerMode(mode){
+    switch(mode){
+       case "break": const timerMode = "break";
+    }
 }
