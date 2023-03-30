@@ -46,6 +46,11 @@ secInput.addEventListener("input", () => {
     restart = true;
 });
 
+let time = new Time(hourVal, minVal, secVal);
+
+// createTimer();
+
+
 //Start & pause timer on start button click
 startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
@@ -61,6 +66,7 @@ timerDiv.addEventListener("click", () => {
     container[0].style.visibility = 'visible';
     window.addEventListener("click", onClickOutside);
 });
+
 
 
 //Hides container if click was made outside timer or container
@@ -85,8 +91,19 @@ inputs.forEach((i) => {
     i.addEventListener("mouseout", () => { i.style.backgroundColor = "white" });
 })
 
+
+
+
+// function createTimer(){
+//     const time = new Time(hourVal, minVal, secVal);
+//     console.log("new timer: " + time)
+// }
+
+
 // Starts a timer
 function startTimer() {
+    
+    
     //If not restarting, start at time left
     if (!restart) {
         timeInSec = timeLeft;
@@ -101,7 +118,7 @@ function startTimer() {
 
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
-    timeInUnits = parseTime();
+    let timeInUnits = parseTime();
     let hours = timeInUnits[0]; //will be let hours = <Timer>.timeInUnits[0];
     let mins = timeInUnits[1];
     let secs = timeInUnits[2];
@@ -124,6 +141,7 @@ toString = ()=>{
     if (hours <= 0 && mins <= 0 && secs <= 0) {
         timerEnd();
     }
+
     
 }
 
