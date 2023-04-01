@@ -1,23 +1,32 @@
 //Represents a Timer object. Holds data and methods relating to the Timer
 class Timer{
-     mode;
+    //  mode;
      time;
+     timeLeft;
 
     //Mutable variable for interval ID access
     countInterval;
 
-    constructor(mode, time){
-        this.mode = mode;
+    //add state as parameter?
+    constructor(time){
+        // this.mode = mode;
         this.time = time;
         // console.log("timer created: " + this.time.toString() + " u did it! :D")
     }
 
-    get mode(){
-        return this.mode;
-    }
+    // get mode(){
+    //     return this.mode;
+    // }
 
     get time(){
         return this.time;
+    }
+
+    //currently unused
+    resumeTimer(){
+        this.time.timeInSeconds = this.timeLeft;
+        this.countInterval = setInterval(this.update, 1000);
+        // state = "running"
     }
 
     start(){
@@ -28,33 +37,31 @@ class Timer{
         // console.log("start: " +this.time.timeInSeconds)
 
         // console.log(this.time.timeInSeconds);
-        console.log("timer.start");
+        // console.log("timer.start");
         //If not restarting, start at time left
-        if (state == "paused") {
-            // console.log("restart=false")
-            this.time.timeInSeconds = timeLeft;
-            this.countInterval = setInterval(this.update, 1000);
-            state = "running"
+        // if (state == "paused") {
+        //     // console.log("restart=false")
+        //     console.log("issue in in timer.start")
             
-        } else { //if state = unstarted
+        // } else { //if state = unstarted
             
-            // console.log("restart=true")
-            // timeInSec = this.time.timeInSeconds;
+        //     // console.log("restart=true")
+        //     // timeInSec = this.time.timeInSeconds;
 
             this.countInterval = setInterval(this.update, 1000);
-            state = "running";
-        }
+            // state = "running";
+        // }
         
         // console.log("start: "+this.time.toString());
     }
 
     pause() {
-        timeLeft = this.time.timeInSeconds;
+        this.timeLeft = this.time.timeInSeconds;
         console.log("paused: " +this.time.timeInSeconds)
         // console.log("time left: " + timeLeft);
         clearInterval(this.countInterval);
         // toggleButtonView(pauseButton, startButton);
-        state = "paused";
+       
     
     }
 
@@ -99,7 +106,7 @@ class Timer{
         playSound();
         breakButton.style.visibility = 'visible'
         //state class would handle this w different behavior based on mode 
-        state = "ended"
+        state = "unstarted"
     }    
 
 }

@@ -22,14 +22,9 @@ let breakHourVal = "";
 let breakMinVal = 5;
 let breakSecVal = "";
 
-// //Mutable variable for interval ID access
-// let countInterval;
-
 //Mutable variables for global access
-// let timeInSec;
 let state = "new";
 let mode;
-let timeLeft;
 
 
 //When user input entered, set value
@@ -52,27 +47,8 @@ secInput.addEventListener("input", () => {
 
 
 
-//***** how is this starting & running without any Start() function?????
-//its bc i basically put the whole start function into the lambda
-//rn it creates a new time & timer everytime start button clicked
-//need to implement states to check if timer already created?
-
-//issue: need 
-
 //Start & pause timer on start button click
 startButton.addEventListener("click", startTimer);
-
-// () => {
-//     createTimer();
-//     // Timer.prototype.start();
-//     //countInterval in script.js and not timer.js to display timer on innerhtml
-//     countInterval = setInterval(updateTimer, 1000)
-//     toggleButtonView(startButton, pauseButton);
-//     restartButton.style.visibility = 'hidden';
-
-// });
-
-
 pauseButton.addEventListener("click", pauseTimer);
 //*do this in css
 pauseButton.style.visibility = 'hidden';
@@ -80,11 +56,11 @@ pauseButton.style.visibility = 'hidden';
 restartButton.addEventListener("click", restartTimer);
 breakButton.addEventListener("click", ()=>{
     console.log("break button clicked");
+    doBreakTimer();
 });
 
 
 timerDiv.addEventListener("click", () => {
-    // console.log("clicked");
     container[0].style.visibility = 'visible';
     window.addEventListener("click", onClickOutside);
 });
@@ -115,93 +91,52 @@ inputs.forEach((i) => {
 
 let focusTimer;
 function focusTimeSet() {
-    // isSet = false;
     if (hourVal >= 1 || minVal >= 1 || secVal >= 1) {
-        // console.log("focus time set")
         return true;
-        // isSet = true;
-        // console.log("Timer set!")
     } else {
         // alert("Timer not set! Please enter a time.");
         return false;
     }
-    // return isSet;
-    ;
 }
 
 let breakTimer;
 function breakTimeSet() {
-    // isSet = false;
     if (breakHourVal >= 1 || breakMinVal >= 1 || breakSecVal >= 1) {
         return true;
-        // isSet = true;
-        // console.log("Timer set!")
     } else {
         // alert("Timer not set! Please enter a time.");
         return false;
     }
-    // return isSet;
-    // console.log("break timer created")
-    // return breakTimer;
 }
 
 
 //Creates timer for modes whose time inputs recieved UI
-//if focusHr || focusMin || focusSec recieved input, then
-// create focusTimer and focusTime
-//Issue: creates ONLY a focusTimer. 
-//Set different html attributes for focus input & break input
-//then use switch case 
 function createTimers() {
     if (focusTimeSet() && breakTimeSet()) {
-        // console.log(`focusTimer set: ${focusTimeSet().time.toString()}
-        // breakTimer set: ${breakTimeSet().time.toString()}`)
-
-        focusTimer = new Timer("focus", new Time(hourVal, minVal, secVal));
-        breakTimer = new Timer("break", new Time(breakHourVal, breakMinVal, breakSecVal));
-        console.log("focus&break timer created")
+        focusTimer = new Timer(new Time(hourVal, minVal, secVal));
+        breakTimer = new Timer(new Time(breakHourVal, breakMinVal, breakSecVal));
+        // console.log("focus&break timer created")
        
     } else if(focusTimeSet()){
         // alert("Break timer not set")
         console.log("Break timer not set")
-        focusTimer = new Timer("focus", new Time(hourVal, minVal, secVal));
+        focusTimer = new Timer(new Time(hourVal, minVal, secVal));
         console.log("focus timer created")
-        //ToDo:
-        //Prevent pauseButton showing
-        //Prevent timer from going off
     }
     else if(breakTimeSet()){
         alert("focus time not set")
         console.log("focus time not set")
-        breakTimer = new Timer("break", new Time(breakHourVal, breakMinVal, breakSecVal));
+        breakTimer = new Timer(new Time(breakHourVal, breakMinVal, breakSecVal));
         console.log("break timer created")
-        
-        // console.log(`focusTime set: ${setFocusTimer().toString()}`);
-
-        //ToDo:
-        //Prevent pauseButton showing
-        //Prevent timer from going off
     }
     else{
         console.log("Please set timers")
-        
     }
 }
 
 
 // Starts a timer
 function startTimer() {
-   
-    //****TODO:issue: will need to identify which timer mode to start and individually start it
-    // how to make start work for all timer modes? keep start functionality inside timer.js
-    // if(state = "new"){}
-
-    //how to create timers before start button clicked
-    // if( state = "new"){
-    //     createTimers();
-    // } else{
-    //     timer.start();
-    // }
 
     switch (state){
         case "new":
@@ -213,6 +148,7 @@ function startTimer() {
             } else{
                 breakTimer.start();
             }
+            state = "running";
             break;
         case "running":
             console.log("running: start button shouldnt be visible")
@@ -223,10 +159,11 @@ function startTimer() {
             } else{
                 breakTimer.start();
             }
+            state = "running";
             // console.log("paused: start button shouldnt be visible")
             break;
         case "ended":
-            console.log("ended")
+            console.log("in startTimer. state: " + state)
             break;
         default:
             console.log("state not set");
@@ -235,20 +172,6 @@ function startTimer() {
 
     }
      
-    // console.log("hi")
-    
-    // console.log("startTimer")
-    // //If not restarting, start at time left
-    // if (!restart) {
-    //     timeInSec = timeLeft;
-    //     countInterval = setInterval(updateTimer, 1000)
-    // } else {
-    //     timeInSec = formatTime(hourVal, minVal, secVal);
-
-    //     countInterval = setInterval(updateTimer, 1000)
-    // }
-
-    // countInterval = setInterval(updateTimer, 1000)
     toggleButtonView(startButton, pauseButton);
     restartButton.style.visibility = 'hidden';
     
@@ -257,55 +180,8 @@ function startTimer() {
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
 console.log("updateTimer")
-
-    // let timeInUnits = parseTime();
-    // let hours = timeInUnits[0]; //will be let hours = <Timer>.timeInUnits[0];
-    // let mins = timeInUnits[1];
-    // let secs = timeInUnits[2];
-
-    // toString = () => {
-    //     secs = secs < 10 ? '0' + secs : secs;
-    //     mins = mins < 10 ? '0' + mins : mins;
-
-    //     if (hours >= 1) {
-    //         return `${hours}:${mins}:${secs}`;
-    //     } else {
-    //         return `${mins}:${secs}`;
-    //     }
-    // }
     focusTimer.update();
-
-    //not being called
-    // updateDisplay();
-    
-    //displayTime(hours, mins, secs); //Seperate updateTimer and updateDisplay responsibilities?
-    // timeInSec--;
-
-    // if (hours <= 0 && mins <= 0 && secs <= 0) {
-    //     timerEnd();
-    // }
-
-
 }
-
-// function updateDisplay() {
-//     timerDiv.innerHTML = toString();    //will be <Timer>.toString
-// }
-
-//Parse time from seconds to hours, minutes, seconds
-//Returns array
-// function parseTime() {
-//     const arr = [];
-//     let h = 0;
-//     let m = Math.floor(timeInSec / 60);
-//     let s = timeInSec % 60;
-//     if (m > 60) {
-//         h = Math.floor(timeInSec / 3600);
-//         m = Math.floor(60 * (timeInSec % 3600) / 3600);
-//     }
-//     arr.push(h, m, s);
-//     return arr;
-// }
 
 //Ends timer, plays sound, shows break button
 function timerEnd() {
@@ -316,25 +192,6 @@ function timerEnd() {
     breakButton.style.visibility = 'visible';
 }
 
-//Creates string format of time
-// function displayTime(hours, min, sec) {
-//     sec = sec < 10 ? '0' + sec : sec;
-//     min = min < 10 ? '0' + min : min;
-
-//     if (hours >= 1) {
-//         // hours = hours < 10 ? '0' + hours : hours;
-//         timerDiv.innerHTML = `${hours}:${min}:${sec}`;
-//     }
-//     else {
-//         timerDiv.innerHTML = `${min}:${sec}`;
-//     }
-// }
-
-// //Formats user inputted time into seconds to be compatible with updateTimer
-// function formatTime(h, m, s) {
-//     return Number(h * 3600) + (Number(m * 60)) + Number(s);
-// }
-
 //*is this necessary?
 function playSound() {
     ding.play();
@@ -342,6 +199,7 @@ function playSound() {
 
 //Pauses timer, hides pause button and shows play & restart button
 function pauseTimer() {
+    
     switch (state){
         case "new":
             console.log("new: pause button shouldnt be visible");
@@ -351,16 +209,17 @@ function pauseTimer() {
             break;
         case "running":
             if (mode == "focus"){
-                focusTimer.pause();
+                focusTimer.pause();console.log("pauseTimer")
             } else{
                 breakTimer.pause();
             }
+            state = "paused";
             break;
         case "paused":
             console.log("paused: pause button shouldnt be visible");
             // console.log("paused: start button shouldnt be visible")
             break;
-        case "ended":
+        case "ended":   //is this state necesary
             console.log("ended")
             break;
         default:
@@ -368,17 +227,8 @@ function pauseTimer() {
             console.log("state: " +state);
             break;
         }
-
-    focusTimer.pause();
-
-    // timeLeft = timeInSec;
-    // // console.log("time left: " + timeLeft);
-    // clearInterval(countInterval);
     toggleButtonView(pauseButton, startButton);
-    // restart = false;
-
     restartButton.style.visibility = 'visible';
-
 }
 
 //Toggle visibility status of buttons
@@ -395,15 +245,19 @@ function restartTimer() {
     startTimer();
 }
 
-// function breakTimer() {
-// //do breaktimer
-//     // timeInSec = formatTime(breakHour, breakMin, breakSec);
-//     // countInterval = setInterval(updateTimer, 1000)
-//     // toggleButtonView(breakButton, pauseButton);
-// }
-
-function setTimerMode(mode) {
-    switch (mode) {
-        case "break": const timerMode = "break";
-    }
+function doBreakTimer() {
+    mode = "break";
+    startTimer()
+//do breaktimer
+    // timeInSec = formatTime(breakHour, breakMin, breakSec);
+    // countInterval = setInterval(updateTimer, 1000)
+    // toggleButtonView(breakButton, pauseButton);
 }
+
+// function setMode(m) {
+//     mode = m;
+
+//     // switch (mode) {
+//     //     case "break": const timerMode = "break";
+//     // }
+// }
