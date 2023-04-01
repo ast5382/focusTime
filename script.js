@@ -22,11 +22,11 @@ let breakHour = "";
 let breakMin = 5;
 let breakSec = "";
 
-//Mutable variable for interval ID access
-let countInterval;
+// //Mutable variable for interval ID access
+// let countInterval;
 
 //Mutable variables for global access
-let timeInSec;
+// let timeInSec;
 let restart = true;
 let timeLeft;
 
@@ -51,9 +51,27 @@ secInput.addEventListener("input", () => {
 
 
 
+//***** how is this starting & running without any Start() function?????
+//its bc i basically put the whole start function into the lambda
+//rn it creates a new time & timer everytime start button clicked
+//need to implement states to check if timer already created?
+
+//issue: need 
 
 //Start & pause timer on start button click
 startButton.addEventListener("click", startTimer);
+
+// () => {
+//     createTimer();
+//     // Timer.prototype.start();
+//     //countInterval in script.js and not timer.js to display timer on innerhtml
+//     countInterval = setInterval(updateTimer, 1000)
+//     toggleButtonView(startButton, pauseButton);
+//     restartButton.style.visibility = 'hidden';
+
+// });
+
+
 pauseButton.addEventListener("click", pauseTimer);
 //*do this in css
 pauseButton.style.visibility = 'hidden';
@@ -96,7 +114,7 @@ function focusTimerSet() {
     isSet = false;
     if (hourVal >= 1 || minVal >= 1 || secVal >= 1) {
         isSet = true;
-        console.log("Timer set!")
+        // console.log("Timer set!")
     } else {
         alert("Timer not set! Please enter a time.");
         
@@ -104,6 +122,7 @@ function focusTimerSet() {
     return isSet;
 }
 
+let focusTimer;
 //Creates timer for modes whose time inputs recieved UI
 //if focusHr || focusMin || focusSec recieved input, then
 // create focusTimer and focusTime
@@ -112,8 +131,10 @@ function focusTimerSet() {
 //then use switch case 
 function createTimer() {
     if (focusTimerSet()) {
-        const focusTime = new Time(hourVal, minVal, secVal);
-        const focusTimer = new Timer("focus", focusTime);
+        // const focusTime = ;
+        focusTimer = new Timer("focus", new Time(hourVal, minVal, secVal));
+        
+        // focusTimer.start()
         // console.log( focusTimer.time.timeInSeconds);
     } else{
         //ToDo:
@@ -125,97 +146,108 @@ function createTimer() {
 
 // Starts a timer
 function startTimer() {
-    createTimer();
+   
+    //****TODO:issue: will need to identify which timer mode to start and individually start it
+    // how to make start work for all timer modes? keep start functionality inside timer.js
+    createTimer(); console.log("hi")
+    focusTimer.start();
+    // console.log("startTimer")
+    // //If not restarting, start at time left
+    // if (!restart) {
+    //     timeInSec = timeLeft;
+    //     countInterval = setInterval(updateTimer, 1000)
+    // } else {
+    //     timeInSec = formatTime(hourVal, minVal, secVal);
 
+    //     countInterval = setInterval(updateTimer, 1000)
+    // }
 
-    //If not restarting, start at time left
-    if (!restart) {
-        timeInSec = timeLeft;
-        countInterval = setInterval(updateTimer, 1000)
-    } else {
-        timeInSec = formatTime(hourVal, minVal, secVal);
-
-        countInterval = setInterval(updateTimer, 1000)
-    }
+    // countInterval = setInterval(updateTimer, 1000)
     toggleButtonView(startButton, pauseButton);
     restartButton.style.visibility = 'hidden';
+    
 }
 
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
-    let timeInUnits = parseTime();
-    let hours = timeInUnits[0]; //will be let hours = <Timer>.timeInUnits[0];
-    let mins = timeInUnits[1];
-    let secs = timeInUnits[2];
+console.log("updateTimer")
 
-    toString = () => {
-        secs = secs < 10 ? '0' + secs : secs;
-        mins = mins < 10 ? '0' + mins : mins;
+    // let timeInUnits = parseTime();
+    // let hours = timeInUnits[0]; //will be let hours = <Timer>.timeInUnits[0];
+    // let mins = timeInUnits[1];
+    // let secs = timeInUnits[2];
 
-        if (hours >= 1) {
-            return `${hours}:${mins}:${secs}`;
-        } else {
-            return `${mins}:${secs}`;
-        }
-    }
+    // toString = () => {
+    //     secs = secs < 10 ? '0' + secs : secs;
+    //     mins = mins < 10 ? '0' + mins : mins;
 
-    update();
+    //     if (hours >= 1) {
+    //         return `${hours}:${mins}:${secs}`;
+    //     } else {
+    //         return `${mins}:${secs}`;
+    //     }
+    // }
+    focusTimer.update();
+
+    //not being called
+    // updateDisplay();
+    
     //displayTime(hours, mins, secs); //Seperate updateTimer and updateDisplay responsibilities?
-    timeInSec--;
+    // timeInSec--;
 
-    if (hours <= 0 && mins <= 0 && secs <= 0) {
-        timerEnd();
-    }
+    // if (hours <= 0 && mins <= 0 && secs <= 0) {
+    //     timerEnd();
+    // }
 
 
 }
 
-function update() {
-    timerDiv.innerHTML = toString();    //will be <Timer>.toString
-}
+// function updateDisplay() {
+//     timerDiv.innerHTML = toString();    //will be <Timer>.toString
+// }
 
 //Parse time from seconds to hours, minutes, seconds
 //Returns array
-function parseTime() {
-    const arr = [];
-    let h = 0;
-    let m = Math.floor(timeInSec / 60);
-    let s = timeInSec % 60;
-    if (m > 60) {
-        h = Math.floor(timeInSec / 3600);
-        m = Math.floor(60 * (timeInSec % 3600) / 3600);
-    }
-    arr.push(h, m, s);
-    return arr;
-}
+// function parseTime() {
+//     const arr = [];
+//     let h = 0;
+//     let m = Math.floor(timeInSec / 60);
+//     let s = timeInSec % 60;
+//     if (m > 60) {
+//         h = Math.floor(timeInSec / 3600);
+//         m = Math.floor(60 * (timeInSec % 3600) / 3600);
+//     }
+//     arr.push(h, m, s);
+//     return arr;
+// }
 
 //Ends timer, plays sound, shows break button
 function timerEnd() {
     clearInterval(countInterval);
     console.log("timer ended");
-    playSound();
+    // playSound();
 
     breakButton.style.visibility = 'visible';
 }
 
 //Creates string format of time
-function displayTime(hours, min, sec) {
-    sec = sec < 10 ? '0' + sec : sec;
-    min = min < 10 ? '0' + min : min;
+// function displayTime(hours, min, sec) {
+//     sec = sec < 10 ? '0' + sec : sec;
+//     min = min < 10 ? '0' + min : min;
 
-    if (hours >= 1) {
-        // hours = hours < 10 ? '0' + hours : hours;
-        timerDiv.innerHTML = `${hours}:${min}:${sec}`;
-    }
-    else {
-        timerDiv.innerHTML = `${min}:${sec}`;
-    }
-}
+//     if (hours >= 1) {
+//         // hours = hours < 10 ? '0' + hours : hours;
+//         timerDiv.innerHTML = `${hours}:${min}:${sec}`;
+//     }
+//     else {
+//         timerDiv.innerHTML = `${min}:${sec}`;
+//     }
+// }
 
-//Formats user inputted time into seconds to be compatible with updateTimer
-function formatTime(h, m, s) {
-    return Number(h * 3600) + (Number(m * 60)) + Number(s);
-}
+// //Formats user inputted time into seconds to be compatible with updateTimer
+// function formatTime(h, m, s) {
+//     return Number(h * 3600) + (Number(m * 60)) + Number(s);
+// }
 
 //*is this necessary?
 function playSound() {
@@ -224,11 +256,13 @@ function playSound() {
 
 //Pauses timer, hides pause button and shows play & restart button
 function pauseTimer() {
-    timeLeft = timeInSec;
-    // console.log("time left: " + timeLeft);
-    clearInterval(countInterval);
+    focusTimer.pause();
+
+    // timeLeft = timeInSec;
+    // // console.log("time left: " + timeLeft);
+    // clearInterval(countInterval);
     toggleButtonView(pauseButton, startButton);
-    restart = false;
+    // restart = false;
 
     restartButton.style.visibility = 'visible';
 
@@ -249,10 +283,10 @@ function restartTimer() {
 }
 
 function breakTimer() {
-
-    timeInSec = formatTime(breakHour, breakMin, breakSec);
-    countInterval = setInterval(updateTimer, 1000)
-    toggleButtonView(breakButton, pauseButton);
+//do breaktimer
+    // timeInSec = formatTime(breakHour, breakMin, breakSec);
+    // countInterval = setInterval(updateTimer, 1000)
+    // toggleButtonView(breakButton, pauseButton);
 }
 
 function setTimerMode(mode) {
