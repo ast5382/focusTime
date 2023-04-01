@@ -18,33 +18,34 @@ let minVal = "";
 let secVal = "";
 
 //For break timer
-let breakHour = "";
-let breakMin = 5;
-let breakSec = "";
+let breakHourVal = "";
+let breakMinVal = 5;
+let breakSecVal = "";
 
 // //Mutable variable for interval ID access
 // let countInterval;
 
 //Mutable variables for global access
 // let timeInSec;
-let restart = true;
+let state = "new";
+let mode;
 let timeLeft;
 
 
 //When user input entered, set value
 hourInput.addEventListener("input", () => {
     hourVal = document.getElementById("inputHour").value
-    restart = true;
+    state = "new";
 });
 //For minutes:
 minInput.addEventListener("input", () => {
     minVal = document.getElementById("inputMin").value
-    restart = true;
+    state = "new";
 });
 //For seconds:
 secInput.addEventListener("input", () => {
     secVal = document.getElementById("inputSec").value
-    restart = true;
+    state = "new";
 });
 
 
@@ -77,7 +78,9 @@ pauseButton.addEventListener("click", pauseTimer);
 pauseButton.style.visibility = 'hidden';
 
 restartButton.addEventListener("click", restartTimer);
-breakButton.addEventListener("click", breakTimer);
+breakButton.addEventListener("click", ()=>{
+    console.log("break button clicked");
+});
 
 
 timerDiv.addEventListener("click", () => {
@@ -110,36 +113,78 @@ inputs.forEach((i) => {
     i.addEventListener("mouseout", () => { i.style.backgroundColor = "white" });
 })
 
-function focusTimerSet() {
-    isSet = false;
+let focusTimer;
+function focusTimeSet() {
+    // isSet = false;
     if (hourVal >= 1 || minVal >= 1 || secVal >= 1) {
-        isSet = true;
+        // console.log("focus time set")
+        return true;
+        // isSet = true;
         // console.log("Timer set!")
     } else {
-        alert("Timer not set! Please enter a time.");
-        
+        // alert("Timer not set! Please enter a time.");
+        return false;
     }
-    return isSet;
+    // return isSet;
+    ;
 }
 
-let focusTimer;
+let breakTimer;
+function breakTimeSet() {
+    // isSet = false;
+    if (breakHourVal >= 1 || breakMinVal >= 1 || breakSecVal >= 1) {
+        return true;
+        // isSet = true;
+        // console.log("Timer set!")
+    } else {
+        // alert("Timer not set! Please enter a time.");
+        return false;
+    }
+    // return isSet;
+    // console.log("break timer created")
+    // return breakTimer;
+}
+
+
 //Creates timer for modes whose time inputs recieved UI
 //if focusHr || focusMin || focusSec recieved input, then
 // create focusTimer and focusTime
 //Issue: creates ONLY a focusTimer. 
 //Set different html attributes for focus input & break input
 //then use switch case 
-function createTimer() {
-    if (focusTimerSet()) {
-        // const focusTime = ;
+function createTimers() {
+    if (focusTimeSet() && breakTimeSet()) {
+        // console.log(`focusTimer set: ${focusTimeSet().time.toString()}
+        // breakTimer set: ${breakTimeSet().time.toString()}`)
+
         focusTimer = new Timer("focus", new Time(hourVal, minVal, secVal));
-        
-        // focusTimer.start()
-        // console.log( focusTimer.time.timeInSeconds);
-    } else{
+        breakTimer = new Timer("break", new Time(breakHourVal, breakMinVal, breakSecVal));
+        console.log("focus&break timer created")
+       
+    } else if(focusTimeSet()){
+        // alert("Break timer not set")
+        console.log("Break timer not set")
+        focusTimer = new Timer("focus", new Time(hourVal, minVal, secVal));
+        console.log("focus timer created")
         //ToDo:
         //Prevent pauseButton showing
         //Prevent timer from going off
+    }
+    else if(breakTimeSet()){
+        alert("focus time not set")
+        console.log("focus time not set")
+        breakTimer = new Timer("break", new Time(breakHourVal, breakMinVal, breakSecVal));
+        console.log("break timer created")
+        
+        // console.log(`focusTime set: ${setFocusTimer().toString()}`);
+
+        //ToDo:
+        //Prevent pauseButton showing
+        //Prevent timer from going off
+    }
+    else{
+        console.log("Please set timers")
+        
     }
 }
 
@@ -149,8 +194,49 @@ function startTimer() {
    
     //****TODO:issue: will need to identify which timer mode to start and individually start it
     // how to make start work for all timer modes? keep start functionality inside timer.js
-    createTimer(); console.log("hi")
-    focusTimer.start();
+    // if(state = "new"){}
+
+    //how to create timers before start button clicked
+    // if( state = "new"){
+    //     createTimers();
+    // } else{
+    //     timer.start();
+    // }
+
+    switch (state){
+        case "new":
+            createTimers();
+            mode = "focus";
+        case "unstarted":
+            if (mode == "focus"){
+                focusTimer.start();
+            } else{
+                breakTimer.start();
+            }
+            break;
+        case "running":
+            console.log("running: start button shouldnt be visible")
+            break;
+        case "paused":
+            if (mode == "focus"){
+                focusTimer.start();
+            } else{
+                breakTimer.start();
+            }
+            // console.log("paused: start button shouldnt be visible")
+            break;
+        case "ended":
+            console.log("ended")
+            break;
+        default:
+            console.log("state not set");
+            console.log("state: " +state);
+            break;
+
+    }
+     
+    // console.log("hi")
+    
     // console.log("startTimer")
     // //If not restarting, start at time left
     // if (!restart) {
@@ -225,7 +311,7 @@ console.log("updateTimer")
 function timerEnd() {
     clearInterval(countInterval);
     console.log("timer ended");
-    // playSound();
+    playSound();
 
     breakButton.style.visibility = 'visible';
 }
@@ -256,6 +342,33 @@ function playSound() {
 
 //Pauses timer, hides pause button and shows play & restart button
 function pauseTimer() {
+    switch (state){
+        case "new":
+            console.log("new: pause button shouldnt be visible");
+            break;
+        case "unstarted":
+            console.log("unstarted: pause button shouldnt be visible");
+            break;
+        case "running":
+            if (mode == "focus"){
+                focusTimer.pause();
+            } else{
+                breakTimer.pause();
+            }
+            break;
+        case "paused":
+            console.log("paused: pause button shouldnt be visible");
+            // console.log("paused: start button shouldnt be visible")
+            break;
+        case "ended":
+            console.log("ended")
+            break;
+        default:
+            console.log("state not set");
+            console.log("state: " +state);
+            break;
+        }
+
     focusTimer.pause();
 
     // timeLeft = timeInSec;
@@ -278,16 +391,16 @@ function toggleButtonView(btnHide, btnShow) {
 //Resets and starts the timer to original time
 function restartTimer() {
     pauseTimer();
-    restart = true;
+    state = "unstarted";
     startTimer();
 }
 
-function breakTimer() {
-//do breaktimer
-    // timeInSec = formatTime(breakHour, breakMin, breakSec);
-    // countInterval = setInterval(updateTimer, 1000)
-    // toggleButtonView(breakButton, pauseButton);
-}
+// function breakTimer() {
+// //do breaktimer
+//     // timeInSec = formatTime(breakHour, breakMin, breakSec);
+//     // countInterval = setInterval(updateTimer, 1000)
+//     // toggleButtonView(breakButton, pauseButton);
+// }
 
 function setTimerMode(mode) {
     switch (mode) {
