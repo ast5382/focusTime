@@ -143,7 +143,7 @@ function startTimer() {
         case "unstarted":
             if (mode == "focus") {
                 focusTimer.start();
-            } else {
+            } else { 
                 breakTimer.start();
             }
             state = "running";
@@ -158,7 +158,7 @@ function startTimer() {
                 breakTimer.start();
             }
             state = "running";
-            console.log("paused: start button shouldnt be visible")
+            // console.log("paused: start button shouldnt be visible")
             break;
         case "ended":
             // console.log("ended: start button shouldnt be visible")
@@ -185,6 +185,7 @@ function updateTimer() {
 
 //Ends timer, plays sound, shows break button
 function timerEnd(t) {
+    // console.log(t.time.toString());
     clearInterval(t.countInterval);
     console.log("timer ended");
     playSound();
@@ -192,10 +193,17 @@ function timerEnd(t) {
     if (mode == "focus") {
         pauseButton.style.visibility = 'hidden'
         breakButton.style.visibility = 'visible'
+        state = "unstarted"
+        mode = "break"
     } else {
+        
         toggleButtonView(pauseButton, startButton);
+        state = "new"
+        //set mode to focus?
     }
-    state = "unstarted"
+    // console.log(`mode: ${mode}, state: ${state}`);
+    
+    // console.log(t.time.toString());
 }
 
 //*is this necessary?
