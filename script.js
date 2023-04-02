@@ -54,7 +54,7 @@ pauseButton.addEventListener("click", pauseTimer);
 pauseButton.style.visibility = 'hidden';
 
 restartButton.addEventListener("click", restartTimer);
-breakButton.addEventListener("click", ()=>{
+breakButton.addEventListener("click", () => {
     console.log("break button clicked");
     doBreakTimer();
 });
@@ -115,21 +115,21 @@ function createTimers() {
     if (focusTimeSet() && breakTimeSet()) {
         focusTimer = new Timer(new Time(hourVal, minVal, secVal));
         breakTimer = new Timer(new Time(breakHourVal, breakMinVal, breakSecVal));
-        // console.log("focus&break timer created")
-       
-    } else if(focusTimeSet()){
+        console.log("focus&break timer created")
+
+    } else if (focusTimeSet()) {
         // alert("Break timer not set")
         console.log("Break timer not set")
         focusTimer = new Timer(new Time(hourVal, minVal, secVal));
         console.log("focus timer created")
     }
-    else if(breakTimeSet()){
+    else if (breakTimeSet()) {
         alert("focus time not set")
         console.log("focus time not set")
         breakTimer = new Timer(new Time(breakHourVal, breakMinVal, breakSecVal));
         console.log("break timer created")
     }
-    else{
+    else {
         console.log("Please set timers")
     }
 }
@@ -138,14 +138,14 @@ function createTimers() {
 // Starts a timer
 function startTimer() {
 
-    switch (state){
+    switch (state) {
         case "new":
             createTimers();
             mode = "focus";
         case "unstarted":
-            if (mode == "focus"){
+            if (mode == "focus") {
                 focusTimer.start();
-            } else{
+            } else {
                 breakTimer.start();
             }
             state = "running";
@@ -154,9 +154,9 @@ function startTimer() {
             console.log("running: start button shouldnt be visible")
             break;
         case "paused":
-            if (mode == "focus"){
+            if (mode == "focus") {
                 focusTimer.start();
-            } else{
+            } else {
                 breakTimer.start();
             }
             state = "running";
@@ -167,19 +167,19 @@ function startTimer() {
             break;
         default:
             console.log("state not set");
-            console.log("state: " +state);
+            console.log("state: " + state);
             break;
 
     }
-     
+
     toggleButtonView(startButton, pauseButton);
     restartButton.style.visibility = 'hidden';
-    
+
 }
 
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
-console.log("updateTimer")
+    console.log("updateTimer")
     focusTimer.update();
 }
 
@@ -199,8 +199,8 @@ function playSound() {
 
 //Pauses timer, hides pause button and shows play & restart button
 function pauseTimer() {
-    
-    switch (state){
+
+    switch (state) {
         case "new":
             console.log("new: pause button shouldnt be visible");
             break;
@@ -208,25 +208,29 @@ function pauseTimer() {
             console.log("unstarted: pause button shouldnt be visible");
             break;
         case "running":
-            if (mode == "focus"){
-                focusTimer.pause();console.log("pauseTimer")
-            } else{
+            if (mode == "focus") {
+                focusTimer.pause(); console.log("pauseTimer")
+            } else {
                 breakTimer.pause();
             }
             state = "paused";
             break;
-        case "paused":
-            console.log("paused: pause button shouldnt be visible");
-            // console.log("paused: start button shouldnt be visible")
+        case "paused":  //used for restart
+            if (mode == "focus") {
+                focusTimer.pause();
+            } else {
+                breakTimer.pause();
+            }
+            // console.log("paused: pause button shouldnt be visible");
             break;
         case "ended":   //is this state necesary
             console.log("ended")
             break;
         default:
             console.log("state not set");
-            console.log("state: " +state);
+            console.log("state: " + state);
             break;
-        }
+    }
     toggleButtonView(pauseButton, startButton);
     restartButton.style.visibility = 'visible';
 }
@@ -241,14 +245,14 @@ function toggleButtonView(btnHide, btnShow) {
 //Resets and starts the timer to original time
 function restartTimer() {
     pauseTimer();
-    state = "unstarted";
+    state = "new";
     startTimer();
 }
 
 function doBreakTimer() {
     mode = "break";
     startTimer()
-//do breaktimer
+    //do breaktimer
     // timeInSec = formatTime(breakHour, breakMin, breakSec);
     // countInterval = setInterval(updateTimer, 1000)
     // toggleButtonView(breakButton, pauseButton);
