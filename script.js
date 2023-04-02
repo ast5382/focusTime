@@ -254,6 +254,7 @@ function restartTimer() {
 function doBreakTimer() {
     mode = "break";
     startTimer()
+    breakButton.style.visibility = "hidden";
     //do breaktimer
     // timeInSec = formatTime(breakHour, breakMin, breakSec);
     // countInterval = setInterval(updateTimer, 1000)
