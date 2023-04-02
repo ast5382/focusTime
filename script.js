@@ -1,3 +1,6 @@
+
+/* script.js uses HTML DOM to facilitate communication between html view and javascript model.*/
+
 //HTML element initializations
 const timerDiv = document.getElementById("timer");
 const startButton = document.getElementById("btnStart");
@@ -8,7 +11,7 @@ const inputs = document.querySelectorAll("input");
 const container = document.getElementsByClassName("container");
 const ding = new Audio('sounds/ding.mp3');
 
-//For focus timer
+//Focus timer
 //rename focusHrInput ?
 const hourInput = document.getElementById("inputHour");
 const minInput = document.getElementById("inputMin");
@@ -17,7 +20,7 @@ let hourVal = "";
 let minVal = "";
 let secVal = "";
 
-//For break timer
+//Break timer
 let breakHourVal = "";
 let breakMinVal = 5;
 let breakSecVal = "";
@@ -25,49 +28,41 @@ let breakSecVal = "";
 //Mutable variables for global access
 let state = "new";
 let mode;
+let focusTimer;
+let breakTimer;
 
+/* Event handler initializations */
 
 //When user input entered, set value
 hourInput.addEventListener("input", () => {
     hourVal = document.getElementById("inputHour").value
     state = "new";
 });
-//For minutes:
 minInput.addEventListener("input", () => {
     minVal = document.getElementById("inputMin").value
     state = "new";
 });
-//For seconds:
 secInput.addEventListener("input", () => {
     secVal = document.getElementById("inputSec").value
     state = "new";
 });
 
-
-
-
-
-//Start & pause timer on start button click
+//Buttons
 startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
-//*do this in css
-pauseButton.style.visibility = 'hidden';
-
 restartButton.addEventListener("click", restartTimer);
 breakButton.addEventListener("click", () => {
     console.log("break button clicked");
     doBreakTimer();
 });
 
-
+//Show timer input form on click
 timerDiv.addEventListener("click", () => {
     container[0].style.visibility = 'visible';
     window.addEventListener("click", onClickOutside);
 });
 
-
-
-//Hides container if click was made outside timer or container
+//Hides container if click was made outside timerDiv or container
 const onClickOutside = (event) => {
     const withinBoundary1 = event.composedPath().includes(timerDiv);
     const withinBoundary2 = event.composedPath().includes(container[0]);
@@ -89,7 +84,10 @@ inputs.forEach((i) => {
     i.addEventListener("mouseout", () => { i.style.backgroundColor = "white" });
 })
 
-let focusTimer;
+
+/* Business Logic: */
+
+//Returns true if focus time set
 function focusTimeSet() {
     if (hourVal >= 1 || minVal >= 1 || secVal >= 1) {
         return true;
@@ -99,7 +97,7 @@ function focusTimeSet() {
     }
 }
 
-let breakTimer;
+//Returns true if break time set
 function breakTimeSet() {
     if (breakHourVal >= 1 || breakMinVal >= 1 || breakSecVal >= 1) {
         return true;
@@ -108,7 +106,6 @@ function breakTimeSet() {
         return false;
     }
 }
-
 
 //Creates timer for modes whose time inputs recieved UI
 function createTimers() {
@@ -135,7 +132,7 @@ function createTimers() {
 }
 
 
-// Starts a timer
+// Starts a timer. Action varies on state and mode of timer. 
 function startTimer() {
 
     switch (state) {
@@ -183,6 +180,7 @@ function updateTimer() {
     focusTimer.update();
 }
 
+//*Currently unused
 //Ends timer, plays sound, shows break button
 function timerEnd() {
     clearInterval(countInterval);
@@ -197,7 +195,7 @@ function playSound() {
     ding.play();
 }
 
-//Pauses timer, hides pause button and shows play & restart button
+//Pauses timer, Action varies on state and mode of timer.
 function pauseTimer() {
 
     switch (state) {
@@ -225,7 +223,7 @@ function pauseTimer() {
             }
             // console.log("paused: pause button shouldnt be visible");
             break;
-        case "ended":   //is this state necesary
+        case "ended":   //*is this state necesary
             console.log("ended")
             break;
         default:
@@ -234,7 +232,7 @@ function pauseTimer() {
             break;
     }
     toggleButtonView(pauseButton, startButton);
-    
+
 }
 
 //Toggle visibility status of buttons
@@ -251,14 +249,11 @@ function restartTimer() {
     startTimer();
 }
 
+//
 function doBreakTimer() {
     mode = "break";
     startTimer()
     breakButton.style.visibility = "hidden";
-    //do breaktimer
-    // timeInSec = formatTime(breakHour, breakMin, breakSec);
-    // countInterval = setInterval(updateTimer, 1000)
-    // toggleButtonView(breakButton, pauseButton);
 }
 
 // function setMode(m) {
