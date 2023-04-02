@@ -1,7 +1,9 @@
+/* Represents the time on a timer. Holds data and methods relating to time. */
+
 class Time {
     timeInSeconds;
     hour;
-    min = 999;
+    min = 999; //<- if this shows, theres an error
     sec;
 
     constructor(h, m, s) {
