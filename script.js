@@ -209,7 +209,9 @@ function pauseTimer() {
             break;
         case "running":
             if (mode == "focus") {
-                focusTimer.pause(); console.log("pauseTimer")
+                focusTimer.pause();
+                restartButton.style.visibility = 'visible';
+                console.log("pauseTimer")
             } else {
                 breakTimer.pause();
             }
@@ -232,7 +234,7 @@ function pauseTimer() {
             break;
     }
     toggleButtonView(pauseButton, startButton);
-    restartButton.style.visibility = 'visible';
+    
 }
 
 //Toggle visibility status of buttons
