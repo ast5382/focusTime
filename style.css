@@ -67,6 +67,7 @@ input{
     background-color: #EF6060;
     font-weight:bold;
     letter-spacing: 2px;
+    visibility: hidden;
 }
 #btnRestart{
     width: 50px;
