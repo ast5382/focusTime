@@ -38,8 +38,8 @@ class Timer{
     //Update time and display. End when timer reaches 0
     update = () =>{
          if (this.time.hour == 0 && this.time.min == 0 && this.time.sec == 0) {
-            this.end();
-            // timerEnd();
+            // this.end();
+            timerEnd(this);
         } else{
             this.updateDisplay();
              this.time.timeInSeconds--;
@@ -51,16 +51,17 @@ class Timer{
         timerDiv.innerHTML = this.time.toString()
     };
 
+    //*currently unused
     //Clear interval to end timer
     end() {
         console.log("timer ended");
         clearInterval(this.countInterval);
 
-        playSound();
-        pauseButton.style.visibility = 'hidden'
-        breakButton.style.visibility = 'visible'
+        // playSound();
+        // pauseButton.style.visibility = 'hidden'
+        // breakButton.style.visibility = 'visible'
         //state class would handle this w different behavior based on mode 
-        state = "unstarted"
+        state = "ended"
     }    
 
 }

@@ -10,6 +10,7 @@ const breakButton = document.getElementById("btnBreak");
 const inputs = document.querySelectorAll("input");
 const container = document.getElementsByClassName("container");
 const ding = new Audio('sounds/ding.mp3');
+const clearly = new Audio('sounds/clearly-602.mp3')
 
 //Focus timer
 //rename focusHrInput ?
@@ -22,8 +23,8 @@ let secVal = "";
 
 //Break timer
 let breakHourVal = "";
-let breakMinVal = 5;
-let breakSecVal = "";
+let breakMinVal = "";
+let breakSecVal = "5";
 
 //Mutable variables for global access
 let state = "new";
@@ -52,7 +53,7 @@ startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
 restartButton.addEventListener("click", restartTimer);
 breakButton.addEventListener("click", () => {
-    console.log("break button clicked");
+    // console.log("break button clicked");
     doBreakTimer();
 });
 
@@ -112,7 +113,7 @@ function createTimers() {
     if (focusTimeSet() && breakTimeSet()) {
         focusTimer = new Timer(new Time(hourVal, minVal, secVal));
         breakTimer = new Timer(new Time(breakHourVal, breakMinVal, breakSecVal));
-        console.log("focus&break timer created")
+        console.log("focus & break timer created")
 
     } else if (focusTimeSet()) {
         // alert("Break timer not set")
@@ -157,10 +158,10 @@ function startTimer() {
                 breakTimer.start();
             }
             state = "running";
-            // console.log("paused: start button shouldnt be visible")
+            console.log("paused: start button shouldnt be visible")
             break;
         case "ended":
-            console.log("in startTimer. state: " + state)
+            // console.log("ended: start button shouldnt be visible")
             break;
         default:
             console.log("state not set");
@@ -174,25 +175,33 @@ function startTimer() {
 
 }
 
+//*Currently unused
 //Decreses the time shown by 1 second and stops when time hits 0
 function updateTimer() {
     console.log("updateTimer")
     focusTimer.update();
 }
 
-//*Currently unused
+
 //Ends timer, plays sound, shows break button
-function timerEnd() {
-    clearInterval(countInterval);
+function timerEnd(t) {
+    clearInterval(t.countInterval);
     console.log("timer ended");
     playSound();
 
-    breakButton.style.visibility = 'visible';
+    if (mode == "focus") {
+        pauseButton.style.visibility = 'hidden'
+        breakButton.style.visibility = 'visible'
+    } else {
+        toggleButtonView(pauseButton, startButton);
+    }
+    state = "unstarted"
 }
 
 //*is this necessary?
 function playSound() {
-    ding.play();
+    // ding.play();
+    clearly.play();
 }
 
 //Pauses timer, Action varies on state and mode of timer.
@@ -209,7 +218,7 @@ function pauseTimer() {
             if (mode == "focus") {
                 focusTimer.pause();
                 restartButton.style.visibility = 'visible';
-                console.log("pauseTimer")
+                // console.log("pauseTimer")
             } else {
                 breakTimer.pause();
             }
@@ -221,10 +230,10 @@ function pauseTimer() {
             } else {
                 breakTimer.pause();
             }
-            // console.log("paused: pause button shouldnt be visible");
+            console.log("restarting timer");
             break;
         case "ended":   //*is this state necesary
-            console.log("ended")
+            console.log("ended: pause button shouldnt be visible")
             break;
         default:
             console.log("state not set");
