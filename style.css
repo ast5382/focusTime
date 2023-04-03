@@ -128,13 +128,21 @@ input{
     visibility: hidden;
 }
 #btnBreak{
-    background-color: #676767;
+    background-color: #89BFFF;
 
     position: absolute;
     /* top: 90%; */
     /* left: 50%; */
     transform: translate(70px, 190px);
     /* transform: translateX(100px) */
+    visibility: hidden;
+}
+
+#btnExtend{
+    background-color:#FFCB12;
+
+    position: absolute;
+    transform: translate(-210px, 190px);
     visibility: hidden;
 }
 

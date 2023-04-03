@@ -7,6 +7,7 @@ const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
 const restartButton = document.getElementById("btnRestart");
 const breakButton = document.getElementById("btnBreak");
+const extendButton = document.getElementById("btnExtend");
 const inputs = document.querySelectorAll("input");
 const containerClass = document.getElementsByClassName("container");
 const bContainer = document.getElementById("breakInputContainer");
@@ -41,6 +42,7 @@ let state = "new";
 let mode = "focus";
 let focusTimer;
 let breakTimer;
+let extendedTimer; 
 
 /* Event handler initializations */
 
@@ -83,6 +85,11 @@ breakButton.addEventListener("click", () => {
     // console.log("break button clicked");
     doBreakTimer();
 });
+extendButton.addEventListener("click", ()=>{
+    // console.log("extend btn clicked")
+    console.log(state);
+    extendTimer();
+})
 
 //Show timer input form on click
 timerDiv.addEventListener("click", () => {
@@ -190,6 +197,8 @@ function startTimer() {
         case "unstarted":
             if (mode == "focus") {
                 focusTimer.start();
+            } else if(mode == "extend"){
+                extendedTimer.startExtended();
             } else { 
                 breakTimer.start();
             }
@@ -239,6 +248,7 @@ function timerEnd(t) {
 
     if (mode == "focus") {
         pauseButton.style.visibility = 'hidden'
+        extendButton.style.visibility = 'visible'
         breakButton.style.visibility = 'visible'
         state = "unstarted"
         mode = "break"
@@ -387,6 +397,22 @@ function calculateBreak(){
 
 function setProportinalBreak(){
     breakTimer.time.timeInSeconds = focusTimer.time.totalTime / 5;
+}
+
+function extendTimer(){
+    mode= "extend";
+    //the same as focus timer
+    extendedTimer = new Timer(new Time(0, 0, 0));
+    extendedTimer.time.totalTime = focusTimer.time.totalTime;
+
+    startTimer();
+
+    console.log(extendedTimer.time.totalTime);
+    // extendedTimer.time.timeInSeconds += focusTimer.time.totalTime;
+    
+
+    extendButton.style.visibility = 'hidden';
+    breakButton.style.visibility = 'hidden'
 }
 
 // function setMode(m) {

@@ -23,14 +23,14 @@ class Time {
     }
 
     //Parse time from seconds to hours, minutes, seconds
-    parseTime() {
+    parseTime(t) {
         // console.log("parseTime: "+this.timeInSeconds)
         this.hour = 0;
-        this.min = Math.floor(this.timeInSeconds / 60);
-        this.sec = this.timeInSeconds % 60;
+        this.min = Math.floor(t / 60);
+        this.sec = t % 60;
         if (this.min > 60) {
-            this.hour = Math.floor(this.timeInSeconds / 3600);
-            this.min = Math.floor(60 * (this.timeInSeconds % 3600) / 3600);
+            this.hour = Math.floor(t / 3600);
+            this.min = Math.floor(60 * (t % 3600) / 3600);
         }
 
     }
@@ -61,8 +61,8 @@ class Time {
     // }
 
     //TODO: set to actual 00:00:00 format
-    toString() {
-        this.parseTime()
+    toString(t) {
+        this.parseTime(t)
 
         this.sec = this.sec < 10 ? '0' + this.sec : this.sec;
         this.min = this.min < 10 ? '0' + this.min : this.min;
@@ -75,4 +75,6 @@ class Time {
         // return "toStringmin: " + this.min;
         // return ("tostring")
     }
+
+    
 }
