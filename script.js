@@ -34,6 +34,7 @@ const secInputB = document.getElementById("inputSecB");
 let breakHourVal = "";
 let breakMinVal = "";
 let breakSecVal = "";
+let proportionalBreak = false;
 
 //Mutable variables for global access
 let state = "new";
@@ -159,7 +160,11 @@ function createTimers() {
 
     } else if (focusTimeSet()) {
         // alert("Break timer not set")
-        console.log("Break timer not set")
+        breakTimer = new Timer(new Time(breakHourVal, breakMinVal, breakSecVal));
+        alert("Break timer not set. Setting proportional break timer.");
+        console.log("Break timer not set. Setting proportional break timer.");
+        proportionalBreak = true;
+
         focusTimer = new Timer(new Time(hourVal, minVal, secVal));
         console.log("focus timer created")
     }
@@ -237,6 +242,10 @@ function timerEnd(t) {
         breakButton.style.visibility = 'visible'
         state = "unstarted"
         mode = "break"
+        // calculateBreak()
+        if(proportionalBreak){
+            setProportinalBreak()
+        }
         timerDiv.innerHTML = showSetTime();
     } else {
         toggleButtonView(pauseButton, startButton);
@@ -369,8 +378,15 @@ function showSetTime(){
     }else{
         console.log("time not set")
     }
-    
-    
+}
+
+function calculateBreak(){
+    let breakInSeconds = focusTimer.time.totalTime / 5
+    console.log(breakInSeconds);
+}
+
+function setProportinalBreak(){
+    breakTimer.time.timeInSeconds = focusTimer.time.totalTime / 5;
 }
 
 // function setMode(m) {

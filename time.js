@@ -1,6 +1,7 @@
 /* Represents the time on a timer. Holds data and methods relating to time. */
 
 class Time {
+    totalTime;
     timeInSeconds;
     hour;
     min = 999; //<- if this shows, theres an error
@@ -8,12 +9,17 @@ class Time {
 
     constructor(h, m, s) {
         this.timeInSeconds = Number(h * 3600) + (Number(m * 60)) + Number(s);
+        this.totalTime= this.timeInSeconds;
         //    console.log("time created")
 
     }
 
     get timeInSeconds() {
         return this.timeInSeconds;
+    }
+
+    get totalTime(){
+        return this.totalTime;
     }
 
     //Parse time from seconds to hours, minutes, seconds
