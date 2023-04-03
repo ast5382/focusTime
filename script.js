@@ -63,11 +63,11 @@ hourInputB.addEventListener("input", () => {
     state = "new";
 });
 minInputB.addEventListener("input", () => {
-    minVal = document.getElementById("inputMinB").value
+    breakMinVal = document.getElementById("inputMinB").value
     state = "new";
 });
 secInputB.addEventListener("input", () => {
-    secVal = document.getElementById("inputSecB").value
+    breakSecVal = document.getElementById("inputSecB").value
     state = "new";
 });
 
@@ -82,7 +82,7 @@ breakButton.addEventListener("click", () => {
 
 //Show timer input form on click
 timerDiv.addEventListener("click", () => {
-    console.log("timerDiv clicked")
+    // console.log("timerDiv clicked")
     containerClass[0].style.visibility = 'visible';
     window.addEventListener("click", onClickOutside);
 });
@@ -115,12 +115,12 @@ inputs.forEach((i) => {
 })
 
 rightArrow.addEventListener("click", ()=>{
-    console.log("right arrow clicked")
+    // console.log("right arrow clicked")
     toggleButtonView(fContainer, bContainer);
 })
 
 leftArrow.addEventListener("click", ()=>{
-    console.log("left arrow clicked")
+    // console.log("left arrow clicked")
     toggleButtonView(bContainer, fContainer);
 })
 
