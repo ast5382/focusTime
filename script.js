@@ -37,7 +37,7 @@ let breakSecVal = "";
 
 //Mutable variables for global access
 let state = "new";
-let mode;
+let mode = "focus";
 let focusTimer;
 let breakTimer;
 
@@ -47,14 +47,17 @@ let breakTimer;
 hourInput.addEventListener("input", () => {
     hourVal = document.getElementById("inputHourF").value
     state = "new";
+    timerDiv.innerHTML = showSetTime();
 });
 minInput.addEventListener("input", () => {
     minVal = document.getElementById("inputMinF").value
     state = "new";
+    timerDiv.innerHTML = showSetTime();
 });
 secInput.addEventListener("input", () => {
     secVal = document.getElementById("inputSecF").value
     state = "new";
+    timerDiv.innerHTML = showSetTime();
 });
 
 //break
@@ -234,15 +237,14 @@ function timerEnd(t) {
         breakButton.style.visibility = 'visible'
         state = "unstarted"
         mode = "break"
+        timerDiv.innerHTML = showSetTime();
     } else {
-        
         toggleButtonView(pauseButton, startButton);
         state = "new"
-        //set mode to focus?
+        mode = "focus"
+        timerDiv.innerHTML = showSetTime();
+      
     }
-    // console.log(`mode: ${mode}, state: ${state}`);
-    
-    // console.log(t.time.toString());
 }
 
 //*is this necessary?
@@ -310,6 +312,65 @@ function doBreakTimer() {
     mode = "break";
     startTimer()
     breakButton.style.visibility = "hidden";
+}
+
+//Displays time before timer starts
+function showSetTime(){
+    if (mode == "focus"){
+
+        if(secVal == 0){
+            secVal = '00'
+        } else if(secVal < 10){
+            secVal = Number(secVal).toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+              })
+        }
+        if(minVal == 0){
+            minVal = '00'
+        } else if(minVal < 10){
+            minVal = Number(minVal).toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+              })
+        }
+
+        if (hourVal >= 1) {
+            return `${hourVal}:${minVal}:${secVal}`;
+        } else {
+            return `${minVal}:${secVal}`;
+        }
+    } else if(mode=="break"){
+
+        if(breakSecVal == 0){
+            breakSecVal = '00'
+        } else if(breakSecVal < 10){
+            breakSecVal = Number(breakSecVal).toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+              })
+        }
+        if(breakMinVal == 0){
+            breakMinVal = '00'
+        } else if(breakMinVal < 10){
+            breakMinVal = Number(breakMinVal).toLocaleString('en-US', {
+                minimumIntegerDigits: 2,
+                useGrouping: false
+              })
+
+        }
+
+        if (breakHourVal >= 1) {
+            return `${breakHourVal}:${breakMinVal}:${breakSecVal}`;
+        } else {
+            return `${breakMinVal}:${breakSecVal}`;
+        }
+        
+    }else{
+        console.log("time not set")
+    }
+    
+    
 }
 
 // function setMode(m) {
