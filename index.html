@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/9d7fb88373.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;800&display=swap" rel="stylesheet">
     <link href='style.css' rel='stylesheet'>
     <title>Study Time</title>
@@ -25,7 +26,8 @@
 :
         <input type="text" id="inputSecF" placeholder="00"/>
 
-        <p id="rightArrow">></p>
+        <!-- <p id="rightArrow">></p> -->
+        <i id ="rightArrow" class="fa fa-light fa-caret-right" style="color: #676767;"></i>
         
         <p class="timerTitle">focus</p>
     </div>
@@ -38,14 +40,16 @@
 :
         <input type="text" id="inputSecB" placeholder="00"/>
 
-        <p id="leftArrow"><</p>
+        <!-- <p id="leftArrow"><</p> -->
+        <i id="leftArrow" class="fa-solid fa-caret-left" style="color: #676767;"></i>
         
         <p class="timerTitle">break</p>
     </div>
 
     <button id="btnStart">START</button>
     <button id="btnPause">PAUSE</button>
-    <button id="btnRestart">r</button>
+    <!-- <button id="btnRestart">r</button> -->
+    <button id="btnRestart" class="fa-solid fa-rotate-left" style="color: #ffffff;"></button>
     <button id="btnBreak">break</button>
 
 
