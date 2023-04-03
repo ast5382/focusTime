@@ -16,12 +16,31 @@
 
     
 
-    <div class="container">
-        <input type="text" id="inputHour" placeholder="00" />
+    <div id = "focusInputContainer" class="container">
+        
+
+        <input type="text" id="inputHourF" placeholder="00" />
 :
-        <input type="text" id="inputMin" placeholder="00"/>
+        <input type="text" id="inputMinF" placeholder="00"/>
 :
-        <input type="text" id="inputSec" placeholder="00"/>
+        <input type="text" id="inputSecF" placeholder="00"/>
+
+        <p id="rightArrow">></p>
+        
+        <p class="timerTitle">focus</p>
+    </div>
+
+    <div id = "breakInputContainer" class="container">
+        
+        <input type="text" id="inputHourB" placeholder="00" />
+:
+        <input type="text" id="inputMinB" placeholder="00"/>
+:
+        <input type="text" id="inputSecB" placeholder="00"/>
+
+        <p id="leftArrow"><</p>
+        
+        <p class="timerTitle">break</p>
     </div>
 
     <button id="btnStart">START</button>

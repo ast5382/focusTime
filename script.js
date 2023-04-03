@@ -8,23 +8,32 @@ const pauseButton = document.getElementById("btnPause");
 const restartButton = document.getElementById("btnRestart");
 const breakButton = document.getElementById("btnBreak");
 const inputs = document.querySelectorAll("input");
-const container = document.getElementsByClassName("container");
+const containerClass = document.getElementsByClassName("container");
+const bContainer = document.getElementById("breakInputContainer");
+const fContainer = document.getElementById("focusInputContainer");
+const rightArrow = document.getElementById("rightArrow");
+const leftArrow = document.getElementById("leftArrow");
+
+//soounds
 const ding = new Audio('sounds/ding.mp3');
 const clearly = new Audio('sounds/clearly-602.mp3')
 
 //Focus timer
 //rename focusHrInput ?
-const hourInput = document.getElementById("inputHour");
-const minInput = document.getElementById("inputMin");
-const secInput = document.getElementById("inputSec");
+const hourInput = document.getElementById("inputHourF");
+const minInput = document.getElementById("inputMinF");
+const secInput = document.getElementById("inputSecF");
 let hourVal = "";
 let minVal = "";
 let secVal = "";
 
 //Break timer
+const hourInputB = document.getElementById("inputHourB");
+const minInputB = document.getElementById("inputMinB");
+const secInputB = document.getElementById("inputSecB");
 let breakHourVal = "";
 let breakMinVal = "";
-let breakSecVal = "5";
+let breakSecVal = "";
 
 //Mutable variables for global access
 let state = "new";
@@ -36,15 +45,29 @@ let breakTimer;
 
 //When user input entered, set value
 hourInput.addEventListener("input", () => {
-    hourVal = document.getElementById("inputHour").value
+    hourVal = document.getElementById("inputHourF").value
     state = "new";
 });
 minInput.addEventListener("input", () => {
-    minVal = document.getElementById("inputMin").value
+    minVal = document.getElementById("inputMinF").value
     state = "new";
 });
 secInput.addEventListener("input", () => {
-    secVal = document.getElementById("inputSec").value
+    secVal = document.getElementById("inputSecF").value
+    state = "new";
+});
+
+//break
+hourInputB.addEventListener("input", () => {
+    breakHourVal = document.getElementById("inputHourB").value
+    state = "new";
+});
+minInputB.addEventListener("input", () => {
+    minVal = document.getElementById("inputMinB").value
+    state = "new";
+});
+secInputB.addEventListener("input", () => {
+    secVal = document.getElementById("inputSecB").value
     state = "new";
 });
 
@@ -59,21 +82,27 @@ breakButton.addEventListener("click", () => {
 
 //Show timer input form on click
 timerDiv.addEventListener("click", () => {
-    container[0].style.visibility = 'visible';
+    console.log("timerDiv clicked")
+    containerClass[0].style.visibility = 'visible';
     window.addEventListener("click", onClickOutside);
 });
 
 //Hides container if click was made outside timerDiv or container
 const onClickOutside = (event) => {
     const withinBoundary1 = event.composedPath().includes(timerDiv);
-    const withinBoundary2 = event.composedPath().includes(container[0]);
+    const withinBoundary2 = event.composedPath().includes(containerClass[0]);
+    const withinBoundary3 = event.composedPath().includes(containerClass[1]);
 
     if (withinBoundary1) {
         // console.log("Click happened inside element")
     } else if (withinBoundary2) {
         // console.log("Click happened inside element")
-    } else {
-        container[0].style.visibility = 'hidden';
+    }  else if (withinBoundary3) {
+        // console.log("Click happened inside element")
+    }
+    else {
+        containerClass[0].style.visibility = 'hidden';
+        containerClass[1].style.visibility = 'hidden';
         // console.log("Click happened **OUTSIDE** element");
         window.removeEventListener("click", onClickOutside);
     }
@@ -83,6 +112,16 @@ const onClickOutside = (event) => {
 inputs.forEach((i) => {
     i.addEventListener("mouseover", () => { i.style.backgroundColor = "#F5F5F5" });
     i.addEventListener("mouseout", () => { i.style.backgroundColor = "white" });
+})
+
+rightArrow.addEventListener("click", ()=>{
+    console.log("right arrow clicked")
+    toggleButtonView(fContainer, bContainer);
+})
+
+leftArrow.addEventListener("click", ()=>{
+    console.log("left arrow clicked")
+    toggleButtonView(bContainer, fContainer);
 })
 
 
