@@ -3,6 +3,7 @@
 
 //HTML element initializations
 const timerDiv = document.getElementById("timer");
+const totalTimeDiv = document.getElementById("totalTime");
 const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
 const restartButton = document.getElementById("btnRestart");
@@ -87,7 +88,7 @@ breakButton.addEventListener("click", () => {
 });
 extendButton.addEventListener("click", ()=>{
     // console.log("extend btn clicked")
-    console.log(state);
+    // console.log(state);
     extendTimer();
 })
 
@@ -200,17 +201,32 @@ function startTimer() {
             } else if(mode == "extend"){
                 extendedTimer.startExtended();
             } else { 
+                // if(extendedTimer){
+                //     setProportinalBreak(extendedTimer);
+                // }
+                console.log('breaktimer seconds: ' + breakTimer.time.timeInSeconds);
                 breakTimer.start();
             }
+            console.log("state set to running, mode: "+mode)
             state = "running";
             break;
         case "running":
-            console.log("running: start button shouldnt be visible")
+            //Break button is visible while extended timer running
+            if(mode == 'break'){
+                extendedTimer.pause();
+                setProportinalBreak(extendedTimer)
+                breakTimer.start();
+            }
+            // console.log("running: start button shouldnt be visible")
             break;
         case "paused":
             if (mode == "focus") {
                 focusTimer.start();
-            } else {
+            } else if(mode == "extend"){
+                extendedTimer.startExtended();
+                setProportinalBreak(extendedTimer)
+                // console.log(extendedTimer.time.totalTime);
+            } else { 
                 breakTimer.start();
             }
             state = "running";
@@ -228,6 +244,13 @@ function startTimer() {
 
     toggleButtonView(startButton, pauseButton);
     restartButton.style.visibility = 'hidden';
+    extendButton.style.visibility = 'hidden'
+    toggleButtonPosition(pauseButton)
+    toggleButtonPosition(startButton)
+
+    if(mode != 'extend'){
+        totalTimeDiv.style.visibility = 'hidden'
+    }
 
 }
 
@@ -254,7 +277,7 @@ function timerEnd(t) {
         mode = "break"
         // calculateBreak()
         if(proportionalBreak){
-            setProportinalBreak()
+            setProportinalBreak(focusTimer)
         }
         timerDiv.innerHTML = showSetTime();
     } else {
@@ -287,7 +310,11 @@ function pauseTimer() {
                 focusTimer.pause();
                 restartButton.style.visibility = 'visible';
                 // console.log("pauseTimer")
-            } else {
+            } else if(mode == "extend"){
+                extendedTimer.pause();
+                setProportinalBreak(extendedTimer)
+                // console.log(extendTimer.time.totalTime);
+            } else { 
                 breakTimer.pause();
             }
             state = "paused";
@@ -392,11 +419,11 @@ function showSetTime(){
 
 function calculateBreak(){
     let breakInSeconds = focusTimer.time.totalTime / 5
-    console.log(breakInSeconds);
+    console.log("break in seconds: " +breakInSeconds);
 }
 
-function setProportinalBreak(){
-    breakTimer.time.timeInSeconds = focusTimer.time.totalTime / 5;
+function setProportinalBreak(timer){
+    breakTimer.time.timeInSeconds = Math.floor(timer.time.totalTime / 5);
 }
 
 function extendTimer(){
@@ -405,14 +432,32 @@ function extendTimer(){
     extendedTimer = new Timer(new Time(0, 0, 0));
     extendedTimer.time.totalTime = focusTimer.time.totalTime;
 
+    totalTimeDiv.style.visibility = 'visible'
+
     startTimer();
 
-    console.log(extendedTimer.time.totalTime);
+    // console.log(extendedTimer.time.totalTime);
     // extendedTimer.time.timeInSeconds += focusTimer.time.totalTime;
     
 
     extendButton.style.visibility = 'hidden';
-    breakButton.style.visibility = 'hidden'
+    // pauseButton.style.position= 'absolute';
+    // pauseButton.style.transform='translate(-210px, 190px)';
+    toggleButtonPosition(pauseButton)
+    toggleButtonPosition(startButton)
+
+    // breakButton.style.visibility = 'hidden'
+}
+
+function toggleButtonPosition(btn){
+    if(mode == "extend"){
+        btn.style.position= 'absolute';
+        btn.style.transform='translate(-210px, 190px)';
+    } else{
+        btn.style.position= 'absolute';
+        btn.style.left = 'left: 50%';
+        btn.style.transform= 'translate(-70px, 190px)';
+    }
 }
 
 // function setMode(m) {

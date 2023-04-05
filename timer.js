@@ -52,14 +52,17 @@ class Timer {
     }
 
     countUpUpdate = () => {
-        this.updateDisplay();
+        
         this.time.timeInSeconds++;
         this.time.totalTime++;
-        console.log(this.time.timeInSeconds);
+        this.updateDisplay();
+        totalTimeDiv.innerHTML = this.time.toString(this.time.totalTime)
+
+        // console.log(this.time.timeInSeconds);
 
         // let totalExtendedTime = this.time.timeInSeconds+focusTimer.time.totalTime;
         // console.log("total time: " + this.time.totalTime)
-        console.log(this.time.toString(this.time.totalTime))
+        // console.log(this.time.toString(this.time.totalTime))
 
     }
 

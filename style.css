@@ -41,8 +41,9 @@ button{
     position: absolute;
     /* top: 45%; */
     /* position: relative; */
+    z-index: 999;
     left: 50%;
-    transform: translate(-50%, -15%); 
+    transform: translate(-50%, -50%); 
     
     /* text-align: center; */
     /* transform: translateY(90%); */
@@ -154,8 +155,30 @@ input{
     /* position: absolute; */
     /* top: 45%; */
     /* left: 50%; */
-
+    z-index: 950;
     position: relative;
     text-align: center;
     transform: translateY(90%);
+}
+#totalTime{
+    /* background-color: #89BFFF; */
+    font-size: 40px;
+    /* width: 125px; */
+
+    /* position: absolute; */
+    /* position: relative; */
+    /* text-align: center; */
+    /* text-align: right; */
+    /* transform: translateY(90px); */
+    left: 215px;
+    /* top: 40px; */
+    /* transform: translate(790px, 40px); */
+
+    position: relative;
+    text-align: center;
+    z-index: 900;
+    /* text-align:end; */
+    transform: translateY(90%);
+    visibility: hidden;
+
 }
