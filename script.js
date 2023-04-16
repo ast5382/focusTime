@@ -4,6 +4,8 @@
 //HTML element initializations
 const timerDiv = document.getElementById("timer");
 const totalTimeDiv = document.getElementById("totalTime");
+const plusSignDiv = document.getElementById("plusSign");
+const totalTextDiv = document.getElementById("totalText");
 const startButton = document.getElementById("btnStart");
 const pauseButton = document.getElementById("btnPause");
 const restartButton = document.getElementById("btnRestart");
@@ -249,6 +251,8 @@ function startTimer() {
     toggleButtonPosition(startButton)
 
     if(mode != 'extend'){
+        plusSignDiv.style.visibility = 'hidden'
+        totalTextDiv.style.visibility = 'hidden'
         totalTimeDiv.style.visibility = 'hidden'
     }
 
@@ -432,6 +436,8 @@ function extendTimer(){
     extendedTimer = new Timer(new Time(0, 0, 0));
     extendedTimer.time.totalTime = focusTimer.time.totalTime;
 
+    plusSignDiv.style.visibility = 'visible'
+    totalTextDiv.style.visibility = 'visible'
     totalTimeDiv.style.visibility = 'visible'
 
     startTimer();
