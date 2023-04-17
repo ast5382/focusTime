@@ -22,7 +22,7 @@ button{
     /* position: relative; */
     /* top: 90%; */
     left: 50%;
-    transform: translate(-70px, 0px);
+    transform: translate(-70px, 40px);
 }
 
 .container{
@@ -43,7 +43,7 @@ button{
     /* position: relative; */
     z-index: 999;
     left: 50%;
-    transform: translate(-50%, -180%); 
+    transform: translate(-50%, -110%); 
     
     /* text-align: center; */
     /* transform: translateY(90%); */
@@ -84,18 +84,21 @@ input{
 
 .extend{
     font-size: 40px;
-    /* width: 125px; */
+    width: 125px;
 
-    /* position: absolute; */
+    position: absolute;
     /* position: relative; */
     /* text-align: center; */
     /* text-align: right; */
     /* transform: translateY(90px); */
     /* left: 215px; */
     /* top: 40px; */
-    transform: translate(220px, -115px);
+    /* transform: translate(455px, -115px); */
 
     /* position: relative; */
+    left: 50%;
+    transform: translate(130%, -180%); 
+
     text-align: center;
     z-index: 950;
     
@@ -158,7 +161,7 @@ input{
     /* position: relative; */
     /* top: 80%; */
     /* left: -50%; */
-    transform: translate(-25px,70px);
+    transform: translate(-25px,95px);
     /* transform: translate(0%, 0%); */
     visibility: hidden;
 }
@@ -168,8 +171,8 @@ input{
     /* position: absolute; */
     /* top: 90%; */
     /* left: 50%; */
-    /* transform: translate(70px, 190px); */
-    transform: translateX(70px);
+    transform: translate(70px, 40px);
+    /* transform: translateX(70px); */
     visibility: hidden;
 }
 
@@ -177,8 +180,8 @@ input{
     background-color:#FFCB12;
 
     /* position: absolute; */
-    transform: translateX(-210px);
-    /* transform: translate(-210px, 190px); */
+    /* transform: translateX(-210px); */
+    transform: translate(-210px, 40px);
     visibility: hidden;
 }
 
@@ -229,4 +232,5 @@ input{
 }
 #totalText{
     font-size: 30px;
+    transform: translate(160px, -120px);
 }

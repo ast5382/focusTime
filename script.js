@@ -458,11 +458,11 @@ function extendTimer(){
 function toggleButtonPosition(btn){
     if(mode == "extend"){
         btn.style.position= 'absolute';
-        btn.style.transform='translate(-210px, 0px)';
+        btn.style.transform='translate(-210px, 40px)';
     } else{
         btn.style.position= 'absolute';
         btn.style.left = 'left: 50%';
-        btn.style.transform= 'translate(-70px, 0px)';
+        btn.style.transform= 'translate(-70px, 40px)';
     }
 }
 
