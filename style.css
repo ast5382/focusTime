@@ -187,17 +187,21 @@ input{
 
 #timer{
     font-size: 100px;
-    /* width: 300px; */
+    text-align: center;
+    width: 300px;
     /* background-color:#EF6060; */
 
     /* to center timer */
-    /* position: absolute;  */
-    /* top: 45%;
-    left: 50%; */
+    margin:auto;
+    position: absolute; 
+    top: 45%;
+    /* left: 50%; */
+    
+    
 
     z-index: 950;
     position: relative;
-    /* text-align: center; */
+    
     transform: translateY(90%);
 }
 #totalTime{
