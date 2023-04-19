@@ -2,6 +2,7 @@
 
 class Timer {
     time;
+    worker = new Worker('worker.js');
     //  timeLeft;
 
     //Mutable variable for interval ID access
@@ -56,6 +57,8 @@ class Timer {
         this.time.timeInSeconds++;
         this.time.totalTime++;
         this.updateDisplay();
+
+        //**this will be a problem for webworker
         totalTimeDiv.innerHTML = this.time.toString(this.time.totalTime)
 
         // console.log(this.time.timeInSeconds);
@@ -66,6 +69,8 @@ class Timer {
 
     }
 
+    //**this will be a problem for webworker
+    //  access function in script.js that does it?
     //Change text of timerDiv
     updateDisplay() {
         timerDiv.innerHTML = this.time.toString(this.time.timeInSeconds)
