@@ -176,7 +176,7 @@ function createTimers() {
         proportionalBreak = true;
 
         focusTimer = new Timer(new Time(hourVal, minVal, secVal));
-        console.log("focus timer created")
+        // console.log("focus timer created")
     }
     else if (breakTimeSet()) {
         alert("focus time not set")
@@ -209,7 +209,7 @@ function startTimer() {
                 console.log('breaktimer seconds: ' + breakTimer.time.timeInSeconds);
                 breakTimer.start();
             }
-            console.log("state set to running, mode: "+mode)
+            // console.log("state set to running, mode: "+mode)
             state = "running";
             break;
         case "running":

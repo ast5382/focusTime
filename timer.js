@@ -24,10 +24,45 @@ class Timer {
 
     }
 
+//**this will be a problem for webworker
+    //  access function in script.js that does it?
+    //Change text of timerDiv
+    updateDisplay(t) {
+        timerDiv.innerHTML = this.time.toString(t)
+    };
+
     //Set interval to start timer
     start() {
-        this.countInterval = setInterval(this.update, 1000);
+        // this.countInterval = setInterval(this.update, 1000);
+
+        this.worker.postMessage(["start", this.time]);
+        // this.worker.onmessage = function (e) {
+        //     console.log("postMessage from worker: " + e.data);
+        //     // this.time.timeInSeconds = e.data;
+        // }
+
+        this.worker.onmessage = function (e) {
+            switch (e.data[0]) {
+                case "update":
+                    //ISSUE: cant get timeInSec to display in the time frmat.
+                    // recreate format here? or get access to time class functions in worker?
+                    // console.log(e.data[1])
+                    // updateDisplay(e.data[1]);
+                    timerDiv.innerHTML = e.data[1];
+                    //.toString(e.data[1].timeInSeconds);
+                    
+                    break;
+                case "end":
+                    console.log("end called by worker")
+                    timerEnd(this);
+                    break;
+            }
+        }
+
     }
+
+
+
     startExtended() {
         this.countInterval = setInterval(this.countUpUpdate, 1000);
 
@@ -41,19 +76,26 @@ class Timer {
     }
 
     //Update time and display. End when timer reaches 0
-    update = () => {
-        if (this.time.hour == 0 && this.time.min == 0 && this.time.sec == 0) {
-            // this.end();
-            timerEnd(this);
-        } else {
-            // console.log("total time: " + this.time.totalTime)
-            this.updateDisplay();
-            this.time.timeInSeconds--;
-        }
-    }
+    // update = () => {
+    //     if (this.time.hour == 0 && this.time.min == 0 && this.time.sec == 0) {
+    //         // this.end();
+    //         timerEnd(this);
+    //     } else {
+    //         // console.log("total time: " + this.time.totalTime)
+    //         this.updateDisplay();
+
+    //         //ISSUE: cant access "this" timer in the worker
+    //         this.worker.postMessage(["start", this.time]);
+    //         this.worker.onmessage = function(e){
+    //             console.log(e.data);
+    //             // this.time.timeInSeconds = e.data;
+    //         }
+    //         this.time.timeInSeconds--;
+    //     }
+    // }
 
     countUpUpdate = () => {
-        
+
         this.time.timeInSeconds++;
         this.time.totalTime++;
         this.updateDisplay();
@@ -69,12 +111,7 @@ class Timer {
 
     }
 
-    //**this will be a problem for webworker
-    //  access function in script.js that does it?
-    //Change text of timerDiv
-    updateDisplay() {
-        timerDiv.innerHTML = this.time.toString(this.time.timeInSeconds)
-    };
+    
 
     //*currently unused
     //Clear interval to end timer
