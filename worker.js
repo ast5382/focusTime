@@ -1,40 +1,62 @@
-
+importScripts('time.js');
 
 let countInterval;
 let action;
-let time; 
+let time;
+let updatedTime = 0;
 // time.hour=76;
-onmessage = function(e){
-   
-    // importScripts('time.js');
+onmessage = function (e) {
+
+    
+    // importScripts('script.js');
     // this.postMessage(this.time.timeInSeconds--);
     //ISSUE: cant access the timer object inside this worker :/
     // console.log(e);
 
     action = e.data[0];
-    time = e.data[1];
-  
 
+    //Issue: every time a message is posted from timer.js,
+    //  the time object gets overwritten and timeinseconds resets
     
+    //Option?: rework timer creation, create time object inside worker?
+    // time = new Time(getFocusVals[0], getFocusVals(1), getFocusVals(2));
+    
+    // time = e.data[1]
+    // if(updatedTime){
+    //     time.timeInSeconds = updatedTime;
+    // }
+
+
     //need time interval insde web worker!!!
     //only need time in seconds to keep counting, dont need display to change
     //> only need to update and post time value
 
     switch (action) {
+        case "new":
+            time = new Time(e.data[1], e.data[2], e.data[3])
+            // console.log(time.timeInSeconds)
+            break;
         case "start":
+            // updatedTime? time.timeInSeconds = updatedTime: time = e.data[1];
             start();
-            
+            break;
+        case "pause":
+            pause();
+            break;
+        default:
+            console.log("default");
             break;
     }
     // console.log("hi");
     // this.postMessage(time.hour);
 
     //for testing
-    // this.postMessage(countInterval);
+    this.postMessage(time.timeInSeconds);
 
 }
 
-function start(){
+function start() {
+    console.log("in start: " + time.timeInSeconds);
     countInterval = setInterval(update, 1000);
 }
 
@@ -43,53 +65,53 @@ function start(){
 //     return message;
 // }
 
-    //Update time and display. End when timer reaches 0
-   let update = () => {
-    // importScripts('time.js');
-    // console.log()
+//Update time and display. End when timer reaches 0
+let update = () => {
+    console.log("in update: " + time.timeInSeconds);
+    if (time.timeInSeconds == 0) {
+        clearInterval(countInterval);
+        this.postMessage(["end"]);
 
-    //issue: time cant access its getters, the hour/min/sec properties are stuck
-    // at their initial values
-        if (time.timeInSeconds == 0) {
+    } else {
+        time.timeInSeconds--;
+        postMessage(["update", toString(time.timeInSeconds)])
+    }
+}
 
-            //can it access this?? no it cannot
-            // timerEnd(this);
-            clearInterval(countInterval);
-            this.postMessage(["end"]);
+//Clear interval to pause timer
+function pause() {
+    // postMessage(["paused", time.timeInSeconds])
+    // console.log("in pause: " + time.timeInSeconds);
+    updatedTime = time.timeInSeconds;
+    clearInterval(countInterval);
+}
 
-        } else {
 
-            //can it access this? no it cannot
-            //  updateDisplay();
-            
-            time.timeInSeconds--;
-            postMessage(["update", toString(time.timeInSeconds)])
-        }
+//time.js functions
+
+//Parse time from seconds to hours, minutes, seconds
+function parseTime(t) {
+    // console.log("parseTime: "+this.timeInSeconds)
+    time.hour = 0;
+    time.min = Math.floor(t / 60);
+    time.sec = t % 60;
+    if (time.min > 60) {
+        time.hour = Math.floor(t / 3600);
+        time.min = Math.floor(60 * (t % 3600) / 3600);
     }
 
-    //Parse time from seconds to hours, minutes, seconds
-    function parseTime(t) {
-        // console.log("parseTime: "+this.timeInSeconds)
-        time.hour = 0;
-        time.min = Math.floor(t / 60);
-        time.sec = t % 60;
-        if (time.min > 60) {
-            time.hour = Math.floor(t / 3600);
-            time.min = Math.floor(60 * (t % 3600) / 3600);
-        }
+}
+function toString(t) {
+    parseTime(t)
 
+    time.sec = time.sec < 10 ? '0' + time.sec : time.sec;
+    time.min = time.min < 10 ? '0' + time.min : time.min;
+
+    if (time.hour >= 1) {
+        return `${time.hour}:${time.min}:${time.sec}`;
+    } else {
+        return `${time.min}:${time.sec}`;
     }
-    function toString(t) {
-        parseTime(t)
-
-        time.sec = time.sec < 10 ? '0' + time.sec : time.sec;
-        time.min = time.min < 10 ? '0' + time.min : time.min;
-
-        if (time.hour >= 1) {
-            return `${time.hour}:${time.min}:${time.sec}`;
-        } else {
-            return `${time.min}:${time.sec}`;
-        }
-        // return "toStringmin: " + this.min;
-        // return ("tostring")
-    }
+    // return "toStringmin: " + this.min;
+    // return ("tostring")
+}

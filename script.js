@@ -187,7 +187,13 @@ function createTimers() {
     else {
         console.log("Please set timers")
     }
+
+
 }
+
+// function getFocusVals(){
+//     return [hourVal, minVal, secVal];
+// }
 
 
 // Starts a timer. Action varies on state and mode of timer. 
@@ -196,6 +202,8 @@ function startTimer() {
     switch (state) {
         case "new":
             createTimers();
+            focusTimer.newWorkerTimer(hourVal, minVal, secVal);
+            breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
             mode = "focus";
         case "unstarted":
             if (mode == "focus") {

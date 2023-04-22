@@ -31,6 +31,11 @@ class Timer {
         timerDiv.innerHTML = this.time.toString(t)
     };
 
+    newWorkerTimer(h, m, s){
+        console.log(h +m+s)
+        this.worker.postMessage(["new",h, m, s ])
+    }
+
     //Set interval to start timer
     start() {
         // this.countInterval = setInterval(this.update, 1000);
@@ -49,19 +54,22 @@ class Timer {
                     // console.log(e.data[1])
                     // updateDisplay(e.data[1]);
                     timerDiv.innerHTML = e.data[1];
+                    // this.timeInSeconds = 
                     //.toString(e.data[1].timeInSeconds);
                     
                     break;
+                // case "paused":
+                //     time.timeInSeconds = e.data[1];
+                    
                 case "end":
                     console.log("end called by worker")
                     timerEnd(this);
                     break;
             }
         }
+        
 
     }
-
-
 
     startExtended() {
         this.countInterval = setInterval(this.countUpUpdate, 1000);
@@ -70,9 +78,9 @@ class Timer {
 
     //Clear interval to pause timer
     pause() {
-        // this.timeLeft = this.time.timeInSeconds;
-        // console.log("paused: " +this.time.timeInSeconds)
-        clearInterval(this.countInterval);
+       
+        this.worker.postMessage(["pause"]);
+
     }
 
     //Update time and display. End when timer reaches 0
