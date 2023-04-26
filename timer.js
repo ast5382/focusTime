@@ -80,6 +80,7 @@ class Timer {
                 case "update":
                     timerDiv.innerHTML = e.data[1];
                     totalTimeDiv.innerHTML = e.data[2];
+                    extendedTimer.time.totalTime = e.data[3];
                     break;
             }
         }

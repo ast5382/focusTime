@@ -99,7 +99,7 @@ let countUpUpdate = () => {
 
     time.timeInSeconds++;
     time.totalTime++;
-    postMessage(["update", toString(time.timeInSeconds), toString(time.totalTime) ])
+    postMessage(["update", toString(time.timeInSeconds), toString(time.totalTime), time.totalTime ])
     
     console.log(time.timeInSeconds);
     console.log("total time: " + time.totalTime)

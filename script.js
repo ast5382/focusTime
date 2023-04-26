@@ -235,9 +235,11 @@ function startTimer() {
                 focusTimer.start();
             } else if(mode == "extend"){
                 extendedTimer.startExtended();
-                setProportinalBreak(extendedTimer)
+                setProportinalBreak(extendedTimer);
                 // console.log(extendedTimer.time.totalTime);
             } else { 
+                //Pause & break button only visible during extended timer 
+                setProportinalBreak(extendedTimer);
                 breakTimer.start();
             }
             state = "running";
