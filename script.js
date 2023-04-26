@@ -203,7 +203,7 @@ function startTimer() {
         case "new":
             createTimers();
             focusTimer.newWorkerTimer(hourVal, minVal, secVal);
-            breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
+            // breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
             mode = "focus";
         case "unstarted":
             if (mode == "focus") {
@@ -214,6 +214,7 @@ function startTimer() {
                 // if(extendedTimer){
                 //     setProportinalBreak(extendedTimer);
                 // }
+                
                 console.log('breaktimer seconds: ' + breakTimer.time.timeInSeconds);
                 breakTimer.start();
             }
@@ -290,6 +291,8 @@ function timerEnd(t) {
         // calculateBreak()
         if(proportionalBreak){
             setProportinalBreak(focusTimer)
+        }else{
+            breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
         }
         timerDiv.innerHTML = showSetTime();
     } else {
@@ -399,19 +402,20 @@ function showSetTime(){
             return `${minVal}:${secVal}`;
         }
     } else if(mode=="break"){
+        breakTimer.time.parseTime(breakTimer.time.timeInSeconds);
 
-        if(breakSecVal == 0){
-            breakSecVal = '00'
-        } else if(breakSecVal < 10){
-            breakSecVal = Number(breakSecVal).toLocaleString('en-US', {
+        if(breakTimer.time.sec == 0){
+            breakTimer.time.sec = '00'
+        } else if(breakTimer.time.sec < 10){
+            breakTimer.time.sec = Number(breakTimer.time.sec).toLocaleString('en-US', {
                 minimumIntegerDigits: 2,
                 useGrouping: false
               })
         }
-        if(breakMinVal == 0){
-            breakMinVal = '00'
-        } else if(breakMinVal < 10){
-            breakMinVal = Number(breakMinVal).toLocaleString('en-US', {
+        if(breakTimer.time.min == 0){
+            breakTimer.time.min = '00'
+        } else if(breakTimer.time.min < 10){
+            breakTimer.time.min = Number(breakTimer.time.min).toLocaleString('en-US', {
                 minimumIntegerDigits: 2,
                 useGrouping: false
               })
@@ -419,9 +423,9 @@ function showSetTime(){
         }
 
         if (breakHourVal >= 1) {
-            return `${breakHourVal}:${breakMinVal}:${breakSecVal}`;
+            return `${breakTimer.time.hour}:${breakTimer.time.min}:${breakTimer.time.sec}`;
         } else {
-            return `${breakMinVal}:${breakSecVal}`;
+            return `${breakTimer.time.min}:${breakTimer.time.sec}`;
         }
         
     }else{
@@ -436,6 +440,8 @@ function calculateBreak(){
 
 function setProportinalBreak(timer){
     breakTimer.time.timeInSeconds = Math.floor(timer.time.totalTime / 5);
+    breakTimer.time.parseTime(breakTimer.time.timeInSeconds);
+    breakTimer.newWorkerTimer(breakTimer.time.hour ,breakTimer.time.min ,breakTimer.time.sec);
 }
 
 function extendTimer(){

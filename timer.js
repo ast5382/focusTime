@@ -32,7 +32,7 @@ class Timer {
     };
 
     newWorkerTimer(h, m, s){
-        console.log(h +m+s)
+        console.log("new break worker: "+h+m+s)
         this.worker.postMessage(["new",h, m, s ])
     }
 
