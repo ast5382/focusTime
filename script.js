@@ -209,7 +209,7 @@ function startTimer() {
             if (mode == "focus") {
                 focusTimer.start();
             } else if(mode == "extend"){
-                extendedTimer.startExtended();
+                extendedTimer.startExtended(focusTimer.time.totalTime);
             } else { 
                 // if(extendedTimer){
                 //     setProportinalBreak(extendedTimer);
@@ -449,6 +449,9 @@ function extendTimer(){
     //the same as focus timer
     extendedTimer = new Timer(new Time(0, 0, 0));
     extendedTimer.time.totalTime = focusTimer.time.totalTime;
+
+    extendedTimer.time.parseTime(extendedTimer.time.timeInSeconds);
+    extendedTimer.newWorkerTimer(extendedTimer.time.hour ,extendedTimer.time.min ,extendedTimer.time.sec);
 
     plusSignDiv.style.visibility = 'visible'
     totalTextDiv.style.visibility = 'visible'

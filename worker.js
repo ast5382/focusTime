@@ -43,6 +43,10 @@ onmessage = function (e) {
         case "pause":
             pause();
             break;
+        case "extend":
+            extend();
+            time.totalTime = e.data[1];
+            break;
         default:
             console.log("default");
             break;
@@ -84,6 +88,25 @@ function pause() {
     // console.log("in pause: " + time.timeInSeconds);
     updatedTime = time.timeInSeconds;
     clearInterval(countInterval);
+}
+
+function extend(){
+    countInterval = setInterval(countUpUpdate, 1000);
+}
+
+let countUpUpdate = () => {
+    // time.totalTime = total;
+
+    time.timeInSeconds++;
+    time.totalTime++;
+    postMessage(["update", toString(time.timeInSeconds), toString(time.totalTime) ])
+    
+    console.log(time.timeInSeconds);
+    console.log("total time: " + time.totalTime)
+
+    // this.updateDisplay();
+    // totalTimeDiv.innerHTML = this.time.toString(this.time.totalTime)
+
 }
 
 

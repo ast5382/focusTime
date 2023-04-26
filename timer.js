@@ -32,7 +32,7 @@ class Timer {
     };
 
     newWorkerTimer(h, m, s){
-        console.log("new break worker: "+h+m+s)
+        // console.log("new break worker: "+h+m+s)
         this.worker.postMessage(["new",h, m, s ])
     }
 
@@ -62,7 +62,7 @@ class Timer {
                 //     time.timeInSeconds = e.data[1];
                     
                 case "end":
-                    console.log("end called by worker")
+                    // console.log("end called by worker")
                     timerEnd(this);
                     break;
             }
@@ -71,8 +71,18 @@ class Timer {
 
     }
 
-    startExtended() {
-        this.countInterval = setInterval(this.countUpUpdate, 1000);
+    startExtended(total) {
+        // this.countInterval = setInterval(this.countUpUpdate, 1000);
+        this.worker.postMessage(["extend", total]);
+
+        this.worker.onmessage = function (e) {
+            switch (e.data[0]) {
+                case "update":
+                    timerDiv.innerHTML = e.data[1];
+                    totalTimeDiv.innerHTML = e.data[2];
+                    break;
+            }
+        }
 
     }
 
@@ -102,22 +112,22 @@ class Timer {
     //     }
     // }
 
-    countUpUpdate = () => {
+    // countUpUpdate = () => {
 
-        this.time.timeInSeconds++;
-        this.time.totalTime++;
-        this.updateDisplay();
+    //     this.time.timeInSeconds++;
+    //     this.time.totalTime++;
+    //     this.updateDisplay();
 
-        //**this will be a problem for webworker
-        totalTimeDiv.innerHTML = this.time.toString(this.time.totalTime)
+    //     //**this will be a problem for webworker
+    //     totalTimeDiv.innerHTML = this.time.toString(this.time.totalTime)
 
-        // console.log(this.time.timeInSeconds);
+    //     // console.log(this.time.timeInSeconds);
 
-        // let totalExtendedTime = this.time.timeInSeconds+focusTimer.time.totalTime;
-        // console.log("total time: " + this.time.totalTime)
-        // console.log(this.time.toString(this.time.totalTime))
+    //     // let totalExtendedTime = this.time.timeInSeconds+focusTimer.time.totalTime;
+    //     // console.log("total time: " + this.time.totalTime)
+    //     // console.log(this.time.toString(this.time.totalTime))
 
-    }
+    // }
 
     
 
