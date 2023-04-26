@@ -60,6 +60,8 @@ onmessage = function (e) {
 }
 
 function start() {
+    // time.timeInSeconds++
+    postMessage(["update", toString(time.timeInSeconds)])
     console.log("in start: " + time.timeInSeconds);
     countInterval = setInterval(update, 1000);
 }
@@ -71,14 +73,25 @@ function start() {
 
 //Update time and display. End when timer reaches 0
 let update = () => {
+    
     console.log("in update: " + time.timeInSeconds);
     if (time.timeInSeconds == 0) {
         clearInterval(countInterval);
         this.postMessage(["end"]);
 
-    } else {
+    } 
+    //else if(time.timeInSeconds > time.totalTime){
+    //     time.timeInSeconds--;
+    //      postMessage(["update", toString(time.timeInSeconds)])
+        
+    //     //This skips one second so the timer appears to start with the correct time
+           //(it makes starting after pause take too long)
+    // }
+     else {
+        
         time.timeInSeconds--;
         postMessage(["update", toString(time.timeInSeconds)])
+        
     }
 }
 

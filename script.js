@@ -296,7 +296,7 @@ function timerEnd(t) {
         }else{
             breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
         }
-        timerDiv.innerHTML = showSetTime();
+        // timerDiv.innerHTML = showSetTime();
     } else {
         toggleButtonView(pauseButton, startButton);
         state = "new"
