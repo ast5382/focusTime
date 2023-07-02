@@ -1,6 +1,6 @@
 
 /* script.js uses HTML DOM to facilitate communication between html view and javascript model.*/
-
+//test comment
 //HTML element initializations
 const timerDiv = document.getElementById("timer");
 const totalTimeDiv = document.getElementById("totalTime");
