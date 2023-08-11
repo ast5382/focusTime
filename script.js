@@ -1,6 +1,6 @@
 
 /* script.js uses HTML DOM to facilitate communication between html view and javascript model.*/
-
+//test comment
 //HTML element initializations
 const timerDiv = document.getElementById("timer");
 const totalTimeDiv = document.getElementById("totalTime");
@@ -176,7 +176,7 @@ function createTimers() {
         proportionalBreak = true;
 
         focusTimer = new Timer(new Time(hourVal, minVal, secVal));
-        console.log("focus timer created")
+        // console.log("focus timer created")
     }
     else if (breakTimeSet()) {
         alert("focus time not set")
@@ -187,7 +187,13 @@ function createTimers() {
     else {
         console.log("Please set timers")
     }
+
+
 }
+
+// function getFocusVals(){
+//     return [hourVal, minVal, secVal];
+// }
 
 
 // Starts a timer. Action varies on state and mode of timer. 
@@ -196,20 +202,23 @@ function startTimer() {
     switch (state) {
         case "new":
             createTimers();
+            focusTimer.newWorkerTimer(hourVal, minVal, secVal);
+            // breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
             mode = "focus";
         case "unstarted":
             if (mode == "focus") {
                 focusTimer.start();
             } else if(mode == "extend"){
-                extendedTimer.startExtended();
+                extendedTimer.startExtended(focusTimer.time.totalTime);
             } else { 
                 // if(extendedTimer){
                 //     setProportinalBreak(extendedTimer);
                 // }
+                
                 console.log('breaktimer seconds: ' + breakTimer.time.timeInSeconds);
                 breakTimer.start();
             }
-            console.log("state set to running, mode: "+mode)
+            // console.log("state set to running, mode: "+mode)
             state = "running";
             break;
         case "running":
@@ -226,9 +235,11 @@ function startTimer() {
                 focusTimer.start();
             } else if(mode == "extend"){
                 extendedTimer.startExtended();
-                setProportinalBreak(extendedTimer)
+                setProportinalBreak(extendedTimer);
                 // console.log(extendedTimer.time.totalTime);
             } else { 
+                //Pause & break button only visible during extended timer 
+                setProportinalBreak(extendedTimer);
                 breakTimer.start();
             }
             state = "running";
@@ -282,8 +293,10 @@ function timerEnd(t) {
         // calculateBreak()
         if(proportionalBreak){
             setProportinalBreak(focusTimer)
+        }else{
+            breakTimer.newWorkerTimer(breakHourVal,breakMinVal ,breakSecVal);
         }
-        timerDiv.innerHTML = showSetTime();
+        // timerDiv.innerHTML = showSetTime();
     } else {
         toggleButtonView(pauseButton, startButton);
         state = "new"
@@ -391,19 +404,20 @@ function showSetTime(){
             return `${minVal}:${secVal}`;
         }
     } else if(mode=="break"){
+        breakTimer.time.parseTime(breakTimer.time.timeInSeconds);
 
-        if(breakSecVal == 0){
-            breakSecVal = '00'
-        } else if(breakSecVal < 10){
-            breakSecVal = Number(breakSecVal).toLocaleString('en-US', {
+        if(breakTimer.time.sec == 0){
+            breakTimer.time.sec = '00'
+        } else if(breakTimer.time.sec < 10){
+            breakTimer.time.sec = Number(breakTimer.time.sec).toLocaleString('en-US', {
                 minimumIntegerDigits: 2,
                 useGrouping: false
               })
         }
-        if(breakMinVal == 0){
-            breakMinVal = '00'
-        } else if(breakMinVal < 10){
-            breakMinVal = Number(breakMinVal).toLocaleString('en-US', {
+        if(breakTimer.time.min == 0){
+            breakTimer.time.min = '00'
+        } else if(breakTimer.time.min < 10){
+            breakTimer.time.min = Number(breakTimer.time.min).toLocaleString('en-US', {
                 minimumIntegerDigits: 2,
                 useGrouping: false
               })
@@ -411,9 +425,9 @@ function showSetTime(){
         }
 
         if (breakHourVal >= 1) {
-            return `${breakHourVal}:${breakMinVal}:${breakSecVal}`;
+            return `${breakTimer.time.hour}:${breakTimer.time.min}:${breakTimer.time.sec}`;
         } else {
-            return `${breakMinVal}:${breakSecVal}`;
+            return `${breakTimer.time.min}:${breakTimer.time.sec}`;
         }
         
     }else{
@@ -428,6 +442,8 @@ function calculateBreak(){
 
 function setProportinalBreak(timer){
     breakTimer.time.timeInSeconds = Math.floor(timer.time.totalTime / 5);
+    breakTimer.time.parseTime(breakTimer.time.timeInSeconds);
+    breakTimer.newWorkerTimer(breakTimer.time.hour ,breakTimer.time.min ,breakTimer.time.sec);
 }
 
 function extendTimer(){
@@ -435,6 +451,9 @@ function extendTimer(){
     //the same as focus timer
     extendedTimer = new Timer(new Time(0, 0, 0));
     extendedTimer.time.totalTime = focusTimer.time.totalTime;
+
+    extendedTimer.time.parseTime(extendedTimer.time.timeInSeconds);
+    extendedTimer.newWorkerTimer(extendedTimer.time.hour ,extendedTimer.time.min ,extendedTimer.time.sec);
 
     plusSignDiv.style.visibility = 'visible'
     totalTextDiv.style.visibility = 'visible'
